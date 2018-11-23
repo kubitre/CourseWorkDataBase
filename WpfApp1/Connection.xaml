@@ -1,0 +1,25 @@
+﻿<Window
+    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls" x:Class="AdminPanel.Connection"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AdminPanel"
+        mc:Ignorable="d"
+    MinHeight="500"
+    MaxHeight="800"
+    MinWidth="1000"
+    MaxWidth="1500"
+        Title="Connection" Height="450" Width="800" WindowStyle="None">
+    
+    <Window.Resources>
+        <local:Timer x:Key="localTimer" TimeOutP="Переподключение через 60 секунд" />
+    </Window.Resources>
+    
+    <Grid DataContext="{StaticResource localTimer}">
+        <Controls:ProgressRing x:Name="progressBar" Height="162" Margin="317,68,313,0" Width="162" VerticalAlignment="Top" />
+        <Label x:Name="ConnectionStart" Content="Подключение к серверу" FontFamily="Times New Roman" FontSize="25" HorizontalAlignment="Center" Margin="264,0" Height="192" VerticalAlignment="Bottom"/>
+        <Label x:Name="ReconnectionTimeOut" Content="{Binding TimeOutP}" Visibility="Visible" FontSize="25" HorizontalAlignment="Center" Margin="246,0" Height="192" VerticalAlignment="Bottom"/>
+        <Label x:Name="ErrorConnected" Visibility="Hidden" FontSize="40" HorizontalAlignment="Center"/>
+    </Grid>
+</Window>
