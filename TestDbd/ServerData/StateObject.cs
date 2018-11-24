@@ -6,7 +6,7 @@ namespace ServerDB.ServerData
     public class StateObject
     {
         public Socket WorkSocket = null;
-        public const int BufferSize = 1024;
+        public const int BufferSize = 10000;
         public byte[] Buffer = new byte[BufferSize];
         public StringBuilder MessageForReciveData = new StringBuilder();
     }
