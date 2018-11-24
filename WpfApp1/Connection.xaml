@@ -13,7 +13,7 @@
         Title="Connection" Height="450" Width="800" WindowStyle="None">
     
     <Window.Resources>
-        <local:Timer x:Key="localTimer" TimeOutP="Переподключение через 60 секунд" />
+        <local:Timer x:Key="localTimer" TimeOutP="Переподключение через 60 секунд"/>
     </Window.Resources>
     
     <Grid DataContext="{StaticResource localTimer}">
