@@ -14,7 +14,6 @@ namespace ServerDB.ServerHandlers
             var state = (StateObject)ar.AsyncState;
             var handler = state.WorkSocket;
 
-
             int bytesRead = handler.EndReceive(ar);
 
             if (bytesRead > 0)
