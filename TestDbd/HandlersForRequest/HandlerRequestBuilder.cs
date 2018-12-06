@@ -9,7 +9,8 @@ namespace ServerDB.HandlersForRequest
 {
     public class HandlerRequestBuilder
     {
-        private static string _patternRequest = "";
+        private static string _patternRequest = "[a-zA-Z0-9 ]{2,}";
+
         public static IHandler RequestBuild(StateObject state)
         {
 
@@ -28,7 +29,8 @@ namespace ServerDB.HandlersForRequest
                             return new TestConnection();
 
                         case GetDishSignal.ActionType:
-                            break;
+                            Console.WriteLine($"[LOG {DateTime.Now}]: Get Dish action type!");
+                            return new GetDish();
 
                         case GetMenuSignal.ActionType:
                             break;
@@ -39,7 +41,7 @@ namespace ServerDB.HandlersForRequest
                 }
             }
 
-            return new NullHandler()
+            return new NullHandler();
         }
     }
 }
