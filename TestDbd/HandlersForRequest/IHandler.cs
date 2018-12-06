@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ServerDB.ServerData;
 
 namespace ServerDB.HandlersForRequest
 {
     public interface IHandler
     {
-        void hand();
+        void hand(StateObject state);
     }
 }
