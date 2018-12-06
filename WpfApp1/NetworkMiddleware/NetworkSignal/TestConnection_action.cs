@@ -24,12 +24,15 @@ namespace AdminPanel.NetworkMiddleware.NetworkSignal
 
                 if (!result.IsCompleted)
                 {
-                    timer = new System.Threading.Timer(OnTimer, null, 1000, Timeout.Infinite);
+                    timer = new System.Threading.Timer(OnTimer, null, 2000, Timeout.Infinite);
                 }
                 TimeOutActive.WaitOne();
 
-                if (!isNormal)
+                if (!result.IsCompleted)
+                {
                     return false;
+                }
+
                 Client.connectDone.WaitOne();
 
                 HandlersForRequest.SendData.Send(socket, ActionType);
@@ -51,8 +54,9 @@ namespace AdminPanel.NetworkMiddleware.NetworkSignal
         {
             if (Interlocked.CompareExchange(ref timeOutFlag, 2, 0) != 0)
                 isNormal = true;
+            else
+                isNormal = false;
 
-            isNormal = false;
             TimeOutActive.Set();
 
         }
