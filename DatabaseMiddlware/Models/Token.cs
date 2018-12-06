@@ -10,6 +10,6 @@ namespace DatabaseMiddlware.Models
         public User User { get; set; }
         public Guid TokenId { get; set; }
         public DateTime TimeCreated { get; set; }
-        public DateTime TimeForDelete { get;set }
+        public DateTime TimeForDelete { get; set; }
     }
 }
