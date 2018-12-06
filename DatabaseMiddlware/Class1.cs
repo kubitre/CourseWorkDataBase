@@ -7,6 +7,11 @@ namespace DatabaseMiddlware
 {
     public class Class1
     {
+        static void Main(string[] args)
+        {
+
+        }
+
         public void TestGetDish()
         {
             using(var context = new Context())
