@@ -9,9 +9,16 @@ namespace AdminPanel.NetworkMiddleware.HandlersForRequest
         public static void Send(Socket client, String data)
         {
             byte[] byteData = Encoding.ASCII.GetBytes(data);
-
-            client.BeginSend(byteData, 0, byteData.Length, 0,
+            try
+            {
+                client.BeginSend(byteData, 0, byteData.Length, 0,
                 new AsyncCallback(SendCallBack.SendCallback), client);
+            }
+            catch(Exception ex)
+            {
+                Client.GetExceptionHandle(ex.Message);
+            }
+            
         }
     }
 }

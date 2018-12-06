@@ -15,7 +15,7 @@ namespace AdminPanel.NetworkMiddleware.HandlersForRequest
             }
             catch (Exception e)
             {
-                //catch to wpf
+                Client.GetExceptionHandle(e.Message);
             }
         }
     }

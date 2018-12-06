@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdminPanel.NetworkMiddleware.HandlersForRequest
 {
@@ -20,9 +16,8 @@ namespace AdminPanel.NetworkMiddleware.HandlersForRequest
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Client.GetExceptionHandle(e.Message);
                 Client.connectDone.Set();
-
             }
         }
     }

@@ -17,7 +17,7 @@ namespace AdminPanel.NetworkMiddleware.HandlersForRequest
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Client.GetExceptionHandle(e.Message);
             }
         }
     }

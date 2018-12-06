@@ -30,11 +30,14 @@ namespace AdminPanel.NetworkMiddleware.HandlersForRequest
                         response = state.MessageForRecieving.ToString();
                     }
                     Client.receiveDone.Set();
+
+                    new HandlersAfterRequesting.HandleAuthentification().Handle(state);
+               
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Client.GetExceptionHandle(e.Message);
             }
         }
     }
