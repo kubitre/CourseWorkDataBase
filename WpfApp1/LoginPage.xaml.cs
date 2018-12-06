@@ -1,9 +1,10 @@
-﻿using AdminPanel.Tcp;
+﻿using AdminPanel.NetworkMiddleware;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Threading;
 using System.Windows;
+
 
 namespace AdminPanel
 {
@@ -12,11 +13,10 @@ namespace AdminPanel
     /// </summary>
     public partial class LoginPage : MetroWindow
     {
-
-
+   
         public LoginPage()
         {
-
+            Client.GetExceptionOutput += GetMessageException;
             InitializeComponent();
             //Client.NewMess += GetMessageFromServer;
             //this.Dispatcher.Invoke(new ThreadStart(() => Client.Run()));
@@ -53,12 +53,13 @@ namespace AdminPanel
             {
                 if (ValidatorsAndCheckers.Validation.Validate(0, this.LoginUsernameTextBox.Text) & ValidatorsAndCheckers.Validation.Validate(1, this.LoginPasswordTextBox.Password))
                 {
-                    if (Client.SendAuthentification(this.LoginUsernameTextBox.Text, this.LoginPasswordTextBox.Password))
+                    if (Client.RequestHandle(NetworkMiddleware.NetworkSignal.Authentification_action.ActionType, this.LoginUsernameTextBox.Text, this.LoginPasswordTextBox.Password))
                     {
                         return true;
                     }
                     else
                     {
+                        Thread.Sleep(5000);
                         return false;
                     }
                 }
@@ -78,6 +79,8 @@ namespace AdminPanel
         private async void GetMessage(string mess) => await this.ShowMessageAsync("Ошибка!", "Пожалуйста, проверьте вводимые данные, т.к. мы обнаружили, что " + mess);
 
         private async void GetMessageAuth(string mess) => await this.ShowMessageAsync("Ошибка входа!", mess);
+
+        private async void GetMessageException(string mess) => await this.Invoke(() => this.ShowMessageAsync("Ошибка!", mess));
 
         
 

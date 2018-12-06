@@ -10,6 +10,59 @@
         MaxHeight="1000" MaxWidth="1400"
         MinHeight="950" MinWidth="1200"
     >
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <Button>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20"
+                   Height="20"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_settings}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                   VerticalAlignment="Center"
+                   Text="Настройки" />
+                </StackPanel>
+            </Button>
+            <Button>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20"
+                   Height="20"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_home_question}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                   VerticalAlignment="Center"
+                   Text="О приложении" />
+                </StackPanel>
+            </Button>
+            <Button>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20"
+                   Height="20"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_github}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                   VerticalAlignment="Center"
+                   Text="К разработчику" />
+                </StackPanel>
+            </Button>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
     <Grid>
         <Grid VerticalAlignment="Top">
             <Image Margin="-288,0,-49,-61" Source="basil-cook-cooking-691114.jpg" Stretch="Fill" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Right" Width="1652">
