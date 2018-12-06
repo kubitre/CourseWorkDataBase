@@ -1,4 +1,4 @@
-﻿using AdminPanel.Tcp;
+﻿using AdminPanel.NetworkMiddleware;
 using System.Threading;
 using System.Windows;
 using MahApps.Metro.Controls.Dialogs;
@@ -64,7 +64,7 @@ namespace AdminPanel
                 this.Dispatcher.Invoke(() => this.ReconnectionTimeOut.Visibility = Visibility.Hidden);
                 this.Dispatcher.Invoke(() => this.ConnectionStart.Visibility = Visibility.Visible);
 
-                if (Client.TestConnection())
+                if (Client.RequestHandle(NetworkMiddleware.NetworkSignal.TestConnection_action.ActionType))
                 {
                     break;
                 }
