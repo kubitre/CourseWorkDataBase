@@ -11,7 +11,7 @@
         MinHeight="768"
         MaxHeight="1080"
         Title="AdminPanel" Height="768" Width="1366">
-    
+
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -19,26 +19,100 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    
+
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <Button Content="settings" />
             <Button>
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="20"
                    Height="20"
                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                         <Rectangle.OpacityMask>
-                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_cupcake}" />
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_settings}" />
                         </Rectangle.OpacityMask>
                     </Rectangle>
                     <TextBlock Margin="4 0 0 0"
                    VerticalAlignment="Center"
-                   Text="Tururu" />
+                   Text="Настройки" />
+                </StackPanel>
+            </Button>
+            <Button>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20"
+                   Height="20"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_home_question}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                   VerticalAlignment="Center"
+                   Text="О приложении" />
+                </StackPanel>
+            </Button>
+            <Button>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20"
+                   Height="20"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_github}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                   VerticalAlignment="Center"
+                   Text="К разработчику" />
                 </StackPanel>
             </Button>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
+    <Grid x:Name="MainWindowSSSS">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="99*"/>
+            <RowDefinition Height="478*"/>
+            <RowDefinition Height="160*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="194*"/>
+            <ColumnDefinition Width="320*"/>
+            <ColumnDefinition Width="165*"/>
+        </Grid.ColumnDefinitions>
 
-    <Grid/>
+
+        <Border Grid.Column="1" Grid.Row="0" Background="Orange" HorizontalAlignment="Center" VerticalAlignment="Center" Width="334" Height="34" Margin="161,32,145,33">
+            <Button x:Name="TraceRoute" Content="Панель администратора" Foreground="White" Background="Orange" FontSize="20" FontFamily="Times New Roman" Margin="10,0"/>
+        </Border>
+
+        <Border  Grid.Column="2" CornerRadius="15, 15, 15, 15" Background="Orange" Padding="5 5" Margin="0,30,118,0" Height="40" VerticalAlignment="Top" HorizontalAlignment="Right" Width="95">
+            <Menu  Background="Orange" BorderThickness="0">
+                <MenuItem x:Name="UserName" Header="Username">
+                    <MenuItem x:Name="MySettingsItem" Header="Мои настройки" Click="MySettingsItem_Click"/>
+                    <Separator />
+                    <MenuItem x:Name="exitFromSession" Header="Выход" Click="exitFromSession_Click"/>
+                </MenuItem>
+            </Menu>
+        </Border>
+
+        <ListView ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto"  Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Background="Transparent" Orientation="Horizontal">
+
+                    </StackPanel>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListBoxItem Margin="20" Background="Orange">
+                <Button x:Name="CooperatorsWindow" Padding="150" Content="Сотрудники" Background="Transparent" BorderThickness="0" FontSize="25" FontFamily="Times New Roman" Click="CooperatorsWindow_Click"/>
+            </ListBoxItem>
+            <ListBoxItem Margin="20" Background="Orange">
+                <Button Padding="150" x:Name="DishesWindow" Content="Блюда" Background="Transparent" BorderThickness="0" FontSize="25" FontFamily="Times New Roman" Click="DishesWindow_Click"/>
+            </ListBoxItem>
+            <ListBoxItem Margin="20"  Background="Orange">
+                <Button x:Name="MenusWindow" Padding="150" Content="Меню" Background="Transparent" BorderThickness="0" FontFamily="Times New Roman" FontSize="25" Click="MenusWindow_Click"/>
+            </ListBoxItem>
+            <ListBoxItem Margin="20"  Background="Orange">
+                <Button x:Name="UsersWindow" Padding="150" Content="Пользователи" Background="Transparent" BorderThickness="0" FontFamily="Times New Roman" FontSize="25" Click="UsersWindow_Click"/>
+            </ListBoxItem>
+        </ListView>
+    </Grid>
 </Controls:MetroWindow>
