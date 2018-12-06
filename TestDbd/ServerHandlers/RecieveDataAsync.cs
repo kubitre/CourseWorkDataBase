@@ -9,22 +9,37 @@ namespace ServerDB.ServerHandlers
     {
         public static void ReadCallback(IAsyncResult ar)
         {
-            var content = String.Empty;
-           
-            var state = (StateObject)ar.AsyncState;
-            var handler = state.WorkSocket;
-
-            int bytesRead = handler.EndReceive(ar);
-
-            if (bytesRead > 0)
+            try
             {
-                Console.WriteLine($"[LOG {DateTime.Now}]: Recieved data on {bytesRead} bytes");
+                var content = String.Empty;
 
-                state.MessageForReciveData.Append(Encoding.ASCII.GetString(
-                    state.Buffer, 0, bytesRead));
+                var state = (StateObject)ar.AsyncState;
+                var handler = state.WorkSocket;
 
-                HandlersForRequest.HandlerRequestBuilder.RequestBuild(state);
+                int bytesRead = handler.EndReceive(ar);
+
+                if (bytesRead > 0)
+                {
+                    Console.WriteLine($"[LOG {DateTime.Now}]: Recieved data on {bytesRead} bytes");
+
+                    state.MessageForReciveData.Append(Encoding.ASCII.GetString(
+                        state.Buffer, 0, bytesRead));
+
+                    Console.WriteLine($"[LOG {DateTime.Now}]: Recieved message: {state.MessageForReciveData.ToString()}");
+
+                    (HandlersForRequest.HandlerRequestBuilder.RequestBuild(state) as HandlersForRequest.IHandler).hand(state);
+                }
+                else
+                {
+                    Console.WriteLine($"[LOG {DateTime.Now}]: Recieve message: {state.MessageForReciveData.ToString()}");
+                    (HandlersForRequest.HandlerRequestBuilder.RequestBuild(state) as HandlersForRequest.IHandler).hand(state);
+                }
             }
+            catch(Exception ex)
+            {
+                ServerDb.Server.NewExceptionRequest(ex.Message);
+            }
+           
         }
     }
 }

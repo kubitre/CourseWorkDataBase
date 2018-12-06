@@ -7,7 +7,7 @@ namespace ServerDB.ServerHandlers
 {
     class SendHandler
     {
-        private static void Send(Socket handler, String data)
+        public static void Send(Socket handler, String data)
         { 
             byte[] byteData = Encoding.ASCII.GetBytes(data);
 
