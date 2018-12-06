@@ -38,8 +38,14 @@
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
     </Reference>
+    <Reference Include="Json, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c6752e45808247c2, processorArchitecture=MSIL">
+      <HintPath>..\packages\JSON.1.0.1\lib\net40\Json.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net46\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -68,7 +74,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Client.cs" />
     <Compile Include="Connection.xaml.cs">
       <DependentUpon>Connection.xaml</DependentUpon>
     </Compile>
@@ -78,18 +83,49 @@
     <Compile Include="Dish.xaml.cs">
       <DependentUpon>Dish.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DishAdd.xaml.cs">
+      <DependentUpon>DishAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ElementMainMneu.xaml.cs">
+      <DependentUpon>ElementMainMneu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ErrorConnect.xaml.cs">
       <DependentUpon>ErrorConnect.xaml</DependentUpon>
     </Compile>
     <Compile Include="Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\AuthBlock.cs" />
+    <Compile Include="Models\ActionResult.cs" />
+    <Compile Include="Models\Dish.cs" />
+    <Compile Include="Models\Payloads\AuthPayload.cs" />
+    <Compile Include="Models\Payloads\Payload.cs" />
+    <Compile Include="NetworkMiddleware\Client.cs" />
+    <Compile Include="NetworkMiddleware\HandlersAfterRequesting\HandleAuthentification.cs" />
+    <Compile Include="NetworkMiddleware\HandlersAfterRequesting\IActiontResponse.cs" />
+    <Compile Include="NetworkMiddleware\HandlersForRequest\ConnectionCallBack.cs" />
+    <Compile Include="NetworkMiddleware\HandlersForRequest\RecieveCallBack.cs" />
+    <Compile Include="NetworkMiddleware\HandlersForRequest\RecieveData.cs" />
+    <Compile Include="NetworkMiddleware\HandlersForRequest\SendCallBack.cs" />
+    <Compile Include="NetworkMiddleware\HandlersForRequest\SendData.cs" />
+    <Compile Include="NetworkMiddleware\NetworkData\Cooperator.cs" />
+    <Compile Include="NetworkMiddleware\NetworkData\Dish.cs" />
+    <Compile Include="NetworkMiddleware\NetworkData\Menu.cs" />
+    <Compile Include="NetworkMiddleware\NetworkData\User.cs" />
+    <Compile Include="NetworkMiddleware\NetworkSignal\Authentification_action.cs" />
+    <Compile Include="NetworkMiddleware\NetworkSignal\ISignal.cs" />
+    <Compile Include="NetworkMiddleware\NetworkSignal\Dish_action.cs" />
+    <Compile Include="NetworkMiddleware\NetworkSignal\Menu_action.cs" />
+    <Compile Include="NetworkMiddleware\NetworkSignal\TestConnection_action.cs" />
+    <Compile Include="NetworkMiddleware\StateObject.cs" />
     <Compile Include="PanelWithData.xaml.cs">
       <DependentUpon>PanelWithData.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StateObject.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="Validation.cs" />
     <Compile Include="Verification.cs" />
+    <Compile Include="ViewModel\DishViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LoginPage.xaml.cs">
@@ -138,6 +174,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="DishAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ElementMainMneu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ErrorConnect.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -175,6 +219,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Entypo-license.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="plus_white_625674.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
