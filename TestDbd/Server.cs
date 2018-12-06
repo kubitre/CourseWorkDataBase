@@ -9,12 +9,19 @@ namespace ServerDb
 {
     class Server
     {
-        private static int _port = 65322;
+        private static int _port = 10234;
         private Socket TcpChannel { get; set; }
         public static ManualResetEvent allDone = new ManualResetEvent(false);
+        public static ManualResetEvent ExceptOut = new ManualResetEvent(false);
+
+
+        internal delegate void ExceptionHandle(string code);
+        public static event ExceptionHandle NewException;
+
 
         public void Run()
         {
+            NewException += HandleExceptionNew;
             var worker = new Thread(new ThreadStart(Worker));
             worker.Start();
         }
@@ -22,7 +29,7 @@ namespace ServerDb
         private void Worker()
         {
             IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
-            IPAddress ipAddress = ipHost.AddressList[0];
+            IPAddress ipAddress = ipHost.AddressList[1];
             IPEndPoint sock = new IPEndPoint(ipAddress, _port);
 
             this.TcpChannel = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -31,12 +38,13 @@ namespace ServerDb
             {
                 this.TcpChannel.Bind(sock);
                 this.TcpChannel.Listen(100);
-                Console.WriteLine($"[LOG {DateTime.Now}]: Server is started on {sock.AddressFamily}:{sock.Port}");
+                Console.WriteLine($"[LOG {DateTime.Now}]: Server is started on {sock.Address}:{sock.Port}");
                 Console.WriteLine($"[LOG {DateTime.Now}]: Start listening connection for this server!");
 
                 while (true)
                 {
                     allDone.Reset();
+
 
                     Console.WriteLine($"[LOG {DateTime.Now}]: Waiting connection for this server");
 
@@ -51,70 +59,80 @@ namespace ServerDb
             }
         }
 
-        private void PrepareRequest(Socket socket, string message)
+        public static void NewExceptionRequest(string code)
         {
-            var regLogin = new Regex("(login:{[a-zA-Z]{4,}[0-9]{2,}})");
-            var regPassword = new Regex("(password:{[a-zA-Z0-9]{6,30}})");
+            NewException(code);
+        }
 
-            Console.WriteLine("Check Login and Password");
+        private void HandleExceptionNew(string code)
+        {
+            Console.WriteLine($"[LOG {DateTime.Now}]: New Exception handle! exception code: {code}");
+        }
 
-            if (message.Contains("login") & message.Contains("password"))
-            {
-                Console.WriteLine("message contain login and password");
-                var mathcesLogin = regLogin.Matches(message);
-                var mathcersPassword = regPassword.Matches(message);
+        //private void PrepareRequest(Socket socket, string message)
+        //{
+        //    var regLogin = new Regex("(login:{[a-zA-Z]{4,}[0-9]{2,}})");
+        //    var regPassword = new Regex("(password:{[a-zA-Z0-9]{6,30}})");
 
-                if(mathcesLogin.Count == 1 & mathcersPassword.Count == 1)
-                {
+        //    Console.WriteLine("Check Login and Password");
 
-                    Console.WriteLine("Data is available!");
-                    var regLoginValue = new Regex("[a-zA-Z]{4,}[0-9]{2,}}");
-                    var regPasswordValue = new Regex(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$");
+        //    if (message.Contains("login") & message.Contains("password"))
+        //    {
+        //        Console.WriteLine("message contain login and password");
+        //        var mathcesLogin = regLogin.Matches(message);
+        //        var mathcersPassword = regPassword.Matches(message);
 
-                    if(regLoginValue.Matches(mathcesLogin[0].Value).Count == 1 & regPasswordValue.Matches(mathcersPassword[0].Value).Count == 1)
-                    {
-                        Console.WriteLine("Work with db!");
-                        WorkWithAuthentificate(socket, regLoginValue.Matches(mathcesLogin[0].Value)[0].Value, regPasswordValue.Matches(mathcersPassword[0].Value)[0].Value);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Data is not available!");
-                }
-            }
-            else
-            {
-                Console.WriteLine("message not contain login and password!");
-                socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        //        if(mathcesLogin.Count == 1 & mathcersPassword.Count == 1)
+        //        {
+
+        //            Console.WriteLine("Data is available!");
+        //            var regLoginValue = new Regex("[a-zA-Z]{4,}[0-9]{2,}}");
+        //            var regPasswordValue = new Regex(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$");
+
+        //            if(regLoginValue.Matches(mathcesLogin[0].Value).Count == 1 & regPasswordValue.Matches(mathcersPassword[0].Value).Count == 1)
+        //            {
+        //                Console.WriteLine("Work with db!");
+        //                WorkWithAuthentificate(socket, regLoginValue.Matches(mathcesLogin[0].Value)[0].Value, regPasswordValue.Matches(mathcersPassword[0].Value)[0].Value);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("Data is not available!");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("message not contain login and password!");
+        //        socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 
-            }
-        }
+        //    }
+        //}
 
-        private void WorkWithAuthentificate(Socket socket, string username, string password)
-        {
-            Console.WriteLine("Authentificate processing");
+        //private void WorkWithAuthentificate(Socket socket, string username, string password)
+        //{
+        //    Console.WriteLine("Authentificate processing");
 
-            //var sendMessage = new AuthentificateSignal();
+        //    //var sendMessage = new AuthentificateSignal();
 
-            //if (DatabaseMiddlware.Workers.Users.UserHandler.Authentificate(username, password))
-            //    sendMessage.Setting("login_succes");
-            //else
-            //    sendMessage.Setting("login_error");
-
-
-
-            //var messgeByte = Encoding.UTF8.GetBytes(Json.JsonParser.Serialize(sendMessage));
-
-            //socket.Send(messgeByte);
-            //ShutDown(socket);
-        }
+        //    //if (DatabaseMiddlware.Workers.Users.UserHandler.Authentificate(username, password))
+        //    //    sendMessage.Setting("login_succes");
+        //    //else
+        //    //    sendMessage.Setting("login_error");
 
 
-        private void ShutDownSocket(Socket socket)
-        {
-            socket.Shutdown(SocketShutdown.Both);
-            socket.Close();
-        }
+
+        //    //var messgeByte = Encoding.UTF8.GetBytes(Json.JsonParser.Serialize(sendMessage));
+
+        //    //socket.Send(messgeByte);
+        //    //ShutDown(socket);
+        //}
+
+
+        //private void ShutDownSocket(Socket socket)
+        //{
+        //    socket.Shutdown(SocketShutdown.Both);
+        //    socket.Close();
+        //}
 
     }
 }
