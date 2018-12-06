@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Net.Sockets;
+using Newtonsoft.Json;
+using AdminPanel.Models;
 
 namespace AdminPanel.NetworkMiddleware.NetworkSignal
 {
+    [Serializable]
     public class Authentification_action : ISignal
     {
         public const string ActionType = "authentification";
-        public string Payload = "";
+
+        public string Action = ActionType;
+        public AuthBLock Payload;
 
         public bool Handle(params object[] param)
         {
@@ -18,12 +23,14 @@ namespace AdminPanel.NetworkMiddleware.NetworkSignal
                 if (param.Length != 2)
                     throw new ArgumentException("autentification payload must be contain username and pasword!");
 
-                Payload = $"\"username\":\"{(string)param[0]}\", \"password\":\"{(string)param[1]}\"";
+                Payload = new AuthBLock { Username = (string)param[0], Password = (string)param[1] };
 
                 socket.BeginConnect(remotePoint, HandlersForRequest.ConnectionCallBack.ConnectCallback, socket);
                 Client.connectDone.WaitOne();
 
-                HandlersForRequest.SendData.Send(socket, ActionType + $", payload:{Json.JsonParser.Serialize(Payload)}");
+                var messageForSend = JsonConvert.SerializeObject(this);
+
+                HandlersForRequest.SendData.Send(socket, messageForSend);
                 Client.sendDone.WaitOne();
 
                 HandlersForRequest.RecieveData.Receive(socket);
