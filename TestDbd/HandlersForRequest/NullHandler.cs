@@ -1,14 +1,19 @@
-﻿using System;
+﻿using ServerDB.ServerData;
+using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Text;
 
 namespace ServerDB.HandlersForRequest
 {
     class NullHandler : IHandler
     {
-        public void hand()
+        public void hand(StateObject state)
         {
-            throw new NotImplementedException();
+            var bytes = Encoding.UTF8.GetBytes("error handle!");
+            state.WorkSocket.BeginSend(bytes, 0, bytes.Length, 0, new AsyncCallback(ServerHandlers.SendCallBack.SendCallback), state.WorkSocket);
+
+            ServerDb.Server.allDone.Set();
         }
     }
 }
