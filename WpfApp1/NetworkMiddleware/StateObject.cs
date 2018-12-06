@@ -3,7 +3,7 @@ using System.Text;
 
 namespace AdminPanel.NetworkMiddleware
 {
-    class StateObject
+    public class StateObject
     {
         public Socket WorkSocket;
         public const int BufferSize = 256;
