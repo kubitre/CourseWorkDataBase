@@ -6,9 +6,9 @@ using System.Text;
 namespace ServerDb.ModelForTransmition
 {
     [Serializable]
-    public class Auth
+    public class Dish
     {
         public string Action { get; set; }
-        public AuthBLock Payload { get; set; }
+        public DishBlock Payload { get; set; }
     }
 }
