@@ -1,4 +1,5 @@
 ﻿using AdminPanel.NetworkMiddleware;
+using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
@@ -8,19 +9,25 @@ using System.Windows;
 
 namespace AdminPanel
 {
-    /// <summary>
-    /// Interaction logic for LoginPage.xaml
-    /// </summary>
     public partial class LoginPage : MetroWindow
     {
-   
+        private ApplicationMemory.MemoryBuild _memory;
+        private Client _networkClient;
+
         public LoginPage()
         {
-            Client.GetExceptionOutput += GetMessageException;
             InitializeComponent();
-            //Client.NewMess += GetMessageFromServer;
-            //this.Dispatcher.Invoke(new ThreadStart(() => Client.Run()));
+            this._networkClient = new Client();
+            this._networkClient.GetExceptionOutput += GetMessageException;
+                                        
+        }
 
+        public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
+        {
+            this._memory = memory;
+            ThemeManager.ChangeAppStyle(this,
+                                        ThemeManager.GetAccent(this._memory.GetAppAccentTheme()),
+                                        ThemeManager.GetAppTheme(this._memory.GetAppTheme()));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -30,14 +37,17 @@ namespace AdminPanel
                 if (CheckData())
                 {
                     var mainWindow = new MainWindow();
+                    this._memory.AddToHistory("mainWindow");
+                    mainWindow.SetMemoryDump(this._memory);
                     mainWindow.Show();
                     this.Close();
                 }
                 else
                 {
                     var errorPanel = new ErrorConnect();
-                    errorPanel.Show();
-                    this.Close();
+                    this._memory.AddToHistory("ErrorAuth");
+                    errorPanel.SetMemoryDump(this._memory);
+                    errorPanel.ShowDialog();
                 }
             }
             catch(Exception ex)
@@ -53,13 +63,22 @@ namespace AdminPanel
             {
                 if (ValidatorsAndCheckers.Validation.Validate(0, this.LoginUsernameTextBox.Text) & ValidatorsAndCheckers.Validation.Validate(1, this.LoginPasswordTextBox.Password))
                 {
-                    if (Client.RequestHandle(NetworkMiddleware.NetworkSignal.Authentification_action.ActionType, this.LoginUsernameTextBox.Text, this.LoginPasswordTextBox.Password))
+                    if (this._networkClient.RequestHandle(NetworkMiddleware.NetworkSignal.Authentification_action.ActionTypeGet, this.LoginUsernameTextBox.Text, this.LoginPasswordTextBox.Password))
                     {
+                        var responseParse = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(this._networkClient.Response);
+
+                        this._memory.AddUser(new NetworkMiddleware.NetworkData.User()
+                        {
+                            UserName = this.LoginUsernameTextBox.Text,
+                            AuthCode = responseParse.Reponse,
+                            LastEnter = DateTime.Now
+                        });
+
                         return true;
                     }
                     else
                     {
-                        Thread.Sleep(5000);
+                        //Thread.Sleep(5000);
                         return false;
                     }
                 }
@@ -72,17 +91,29 @@ namespace AdminPanel
             }
             catch(Exception ex)
             {
-                throw ex;
+                return false;
+                GetMessage(ex.Message);
             }
         }
+        private void AboutMeButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.AboutMe.IsOpen = true;
+        }
 
-        private async void GetMessage(string mess) => await this.ShowMessageAsync("Ошибка!", "Пожалуйста, проверьте вводимые данные, т.к. мы обнаружили, что " + mess);
+        private async void GetMessage(string mess) => await this.ShowMessageAsync("Ошибка!", mess);
 
         private async void GetMessageAuth(string mess) => await this.ShowMessageAsync("Ошибка входа!", mess);
 
         private async void GetMessageException(string mess) => await this.Invoke(() => this.ShowMessageAsync("Ошибка!", mess));
 
-        
+        private void AboutApplication_Click(object sender, RoutedEventArgs e)
+        {
+            this.AboutApp.IsOpen = true;
+        }
 
+        private void SettingsPanels_Click(object sender, RoutedEventArgs e)
+        {
+            this.SettingsPanel.IsOpen = true;
+        }
     }
 }
