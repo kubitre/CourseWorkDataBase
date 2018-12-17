@@ -1,8 +1,8 @@
-﻿using ServerDB.ServerData;
+﻿using ServerDb.ServerData;
 using System;
 using System.Text;
 
-namespace ServerDB.HandlersForRequest
+namespace ServerDb.HandlersForRequest
 {
     class TestConnection : IHandler
     {

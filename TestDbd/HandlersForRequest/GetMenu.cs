@@ -1,7 +1,7 @@
-﻿using ServerDB.ServerData;
+﻿using ServerDb.ServerData;
 using System;
 
-namespace ServerDB.HandlersForRequest
+namespace ServerDb.HandlersForRequest
 {
     class GetMenu : IHandler
     {

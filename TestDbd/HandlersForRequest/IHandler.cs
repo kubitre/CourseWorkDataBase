@@ -1,6 +1,6 @@
-﻿using ServerDB.ServerData;
+﻿using ServerDb.ServerData;
 
-namespace ServerDB.HandlersForRequest
+namespace ServerDb.HandlersForRequest
 {
     public interface IHandler
     {

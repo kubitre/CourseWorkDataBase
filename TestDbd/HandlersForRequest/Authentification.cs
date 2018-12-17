@@ -1,9 +1,10 @@
-﻿using ServerDB.ServerData;
+﻿using ServerDb.ServerData;
 using DatabaseMiddlware.Workers.Users;
-using ServerDB.ModelForTransmition;
+using ServerDb.ModelForTransmition;
 using System;
+using Newtonsoft.Json;
 
-namespace ServerDB.HandlersForRequest
+namespace ServerDb.HandlersForRequest
 {
     class Authentification : IHandler
     {
@@ -24,16 +25,17 @@ namespace ServerDB.HandlersForRequest
         {
             try
             {
-                var authTok = (Auth)Json.JsonParser.Deserialize(state.MessageForReciveData.ToString());
+                Console.WriteLine($"Message auth: {state.MessageForReciveData.ToString()}");
+                var authTok = JsonConvert.DeserializeObject<Auth>(state.MessageForReciveData.ToString());
 
-                if (UserHandler.Authentificate(authTok.Username, authTok.Password))
-                {
-                    ServerHandlers.SendHandler.Send(state.WorkSocket, $"authentificate succes! token : {Guid.NewGuid()}");
-                }
-                else
-                {
-                    ServerHandlers.SendHandler.Send(state.WorkSocket, "authentificate error! error code: User does not exist in database!");
-                }
+                //if (UserHandler.Authentificate(authTok.Payload))
+                //{
+                //    ServerHandlers.SendHandler.Send(state.WorkSocket, $"authentificate succes! token : {Guid.NewGuid()}");
+                //}
+                //else
+                //{
+                //    ServerHandlers.SendHandler.Send(state.WorkSocket, "authentificate error! error code: User does not exist in database!");
+                //}
             }
             catch(Exception ex)
             {
