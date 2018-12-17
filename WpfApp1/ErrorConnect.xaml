@@ -6,8 +6,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AdminPanel"
         mc:Ignorable="d"
-        Title="ErrorConnect" Height="450" Width="800">
+        Title="Ошибка авторизации" Height="450" Width="681.78">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="84*"/>
+            <RowDefinition Height="284*"/>
+            <RowDefinition Height="51*"/>
+        </Grid.RowDefinitions>
+        <Image Source="1.png" Grid.RowSpan="2"/>
+        <!--<TextBlock Text="Извините, но пользователь не существует!" Grid.Row="1"/>-->
+        <Button Content="Попробовать ещё раз" Grid.Row="2" Margin="0,0,0,-1" Click="Button_Click"/>
     </Grid>
 </Controls:MetroWindow>
