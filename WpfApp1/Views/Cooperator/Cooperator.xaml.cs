@@ -1,6 +1,7 @@
 ﻿using AdminPanel.ViewModel;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,12 +25,11 @@ namespace AdminPanel.Views.Cooperator
     public partial class Cooperator : MetroWindow
     {
         private ApplicationMemory.MemoryBuild _memory;
-        private NetworkMiddleware.Client _clientNetwork;
+        public string Name = "Cooperator";
         public Cooperator()
         {
             InitializeComponent();
             this.DataContext = new CooperatorViewModel();
-            this._clientNetwork = new NetworkMiddleware.Client();
         }
 
         public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
@@ -47,7 +47,7 @@ namespace AdminPanel.Views.Cooperator
 
         private void RemoveElement_Click(object sender, RoutedEventArgs e)
         {
-
+            Delete_Click(sender, e);
         }
 
         private void TraceRoute_Click(object sender, RoutedEventArgs e)
@@ -65,14 +65,24 @@ namespace AdminPanel.Views.Cooperator
             this._memory.AddToHistory("CooperatorAdd");
             windowForAdding.SetMemoryDump(this._memory);
             windowForAdding.ShowDialog();
+            if ((bool)windowForAdding.DialogResult)
+            {
+                this.ShowMessageAsync("Операция выполнена успешно!", "Добавлен новый пользователь в бд!");
+            }
+            else
+            {
+                this.ShowMessageAsync("Ошибка!", "Ошибка добавления нового пользователя в бд!");
+            }
         }
 
         private void CooperatorData_Loaded_1(object sender, RoutedEventArgs e)
         {
-            this._clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.CooperatorCodes.COOPERATOR_GET_CODE, 100);
-            if(this._clientNetwork.Response != null)
+            var clientNetwork = new NetworkMiddleware.Client();
+
+            if(clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.CooperatorCodes.COOPERATOR_GET_CODE, 100))
             {
-                var response = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(this._clientNetwork.Response);
+                (this.DataContext as ViewModel.CooperatorViewModel).Cooperators.Clear();
+                var response = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(clientNetwork.Response);
                 foreach(var element in Newtonsoft.Json.JsonConvert.DeserializeObject<List<NetworkMiddleware.NetworkData.Cooperator>>(response.Reponse))
                 {
                     (this.DataContext as ViewModel.CooperatorViewModel).Cooperators.Add(new AdminPanel.Models.Cooperator
@@ -84,6 +94,10 @@ namespace AdminPanel.Views.Cooperator
                         FMEName = $"{element.FirstName} {element.MiddleName[0]}. {element.LastName[0]}."
                     });
                 }
+            }
+            else
+            {
+                this.ShowMessageAsync("Ошибка загрузки данных!", "Пожалуйста, свяжитесь с программистом для решения проблемы!");
             }
         }
 
@@ -104,12 +118,28 @@ namespace AdminPanel.Views.Cooperator
 
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-
+            if((this.DataContext as ViewModel.CooperatorViewModel).SelectedCooperator != null)
+            {
+                var clientNetwork = new NetworkMiddleware.Client();
+                if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.CooperatorCodes.COOPERATOR_DELETE_CODE, (this.DataContext as ViewModel.CooperatorViewModel).SelectedCooperator.Id))
+                {
+                    this.CooperatorData_Loaded_1(sender, e);
+                    this.ShowMessageAsync("Опреация выполнена успешно!", "Выбранный сотрудник был удалён из базы данных!");
+                }
+                else
+                {
+                    this.ShowMessageAsync("Ошибка!", "Невозможно удалить сотрудника, т.к. он связан с другими записями в бд!");
+                }
+            }
+            else
+            {
+                this.ShowMessageAsync("Ошибка!", "Для выполнения операции удаления необходимо выбрать элемент из таблицы!");
+            }
         }
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-
+            CooperatorData_Loaded_1(sender, e);
         }
     }
 }

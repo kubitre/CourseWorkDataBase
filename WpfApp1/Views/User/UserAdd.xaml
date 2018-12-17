@@ -32,6 +32,6 @@
         <ComboBox x:Name="CooperatorChoose" FontSize="25" Grid.Row="2" Grid.Column="1" Margin="25" SelectionChanged="CooperatorChoose_SelectionChanged"/>
         <TextBlock Text="Выберите роль: " FontSize="25" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <ComboBox x:Name="RoleChoose" FontSize="25" Grid.Column="1" Grid.Row="3" Margin="25" SelectionChanged="RoleChoose_SelectionChanged"/>
-        <Button x:Name="AddNewUser" FontSize="25" Content="Добавить пользователя" Grid.Row="4" Grid.ColumnSpan="2" Margin="10"/>
+        <Button x:Name="AddNewUser" FontSize="25" Content="Добавить пользователя" Grid.Row="4" Grid.ColumnSpan="2" Margin="10" Click="AddNewUser_Click"/>
     </Grid>
 </Controls:MetroWindow>

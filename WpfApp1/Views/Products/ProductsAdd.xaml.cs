@@ -5,9 +5,6 @@ using System;
 
 namespace AdminPanel.Views.Products
 {
-    /// <summary>
-    /// Interaction logic for ProductsAdd.xaml
-    /// </summary>
     public partial class ProductsAdd : MetroWindow
     {
         private ApplicationMemory.MemoryBuild _memory;
@@ -30,20 +27,13 @@ namespace AdminPanel.Views.Products
             if(ChekcInput(this.NameProduct_input.Text, this.PriceProduct_input.Text))
             {
                 var clientNetwork = new NetworkMiddleware.Client();
-                try
+                if(clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.ProductCodes.PRODUCT_CREATE_CODE, this.NameProduct_input.Text, this.PriceProduct_input.Text))
                 {
-                    clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.ProductCodes.PRODUCT_CREATE_CODE, new NetworkMiddleware.NetworkData.Product
-                    {
-                        Name = this.NameProduct_input.Text,
-                        Price = double.Parse(this.PriceProduct_input.Text)
-                    });
-
                     this.DialogResult = true;
                 }
-                catch(Exception ex)
+                else
                 {
                     this.DialogResult = false;
-                    this.ShowMessageAsync("Ошибка!", $"Код ошибки: {ex.Message}");
                 }
             }
 

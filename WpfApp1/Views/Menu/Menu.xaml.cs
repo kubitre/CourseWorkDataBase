@@ -17,13 +17,12 @@ namespace AdminPanel.Views.Menu
     public partial class Menu : MetroWindow
     {
         private ApplicationMemory.MemoryBuild _memory;
-        private NetworkMiddleware.Client _clentNetwork;
+        public string Name = "Menu";
 
         public Menu()
         {
             InitializeComponent();
             this.DataContext = new MenuViewModel();
-            this._clentNetwork = new NetworkMiddleware.Client();
         }
 
         public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
@@ -56,12 +55,6 @@ namespace AdminPanel.Views.Menu
             }
         }
 
-        
-        private void button3_Click_1(object sender, EventArgs e)
-        {
-            
-        }
-
         private void ChangeElement_Click(object sender, System.Windows.RoutedEventArgs e)
         {
 
@@ -69,14 +62,33 @@ namespace AdminPanel.Views.Menu
 
         private void RemoveElement_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-
+            if((this.DataContext as ViewModel.MenuViewModel).SelectedMenu != null)
+            {
+                var clientNetwork = new NetworkMiddleware.Client();
+                if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.MenuCodes.MENU_DELETE_CODE, (this.DataContext as ViewModel.MenuViewModel).SelectedMenu.Id))
+                {
+                    this.ShowMessageAsync("Операция выполнена успешно!", "Выбранное меню было успешно удалено из бд!");
+                    this.MenuData_Loaded(sender, e);
+                }
+                else
+                {
+                    this.ShowMessageAsync("Ошибка!", "Невозможно удалить данное меню, т.к. оно связано с другими таблицами в бд!");
+                }
+            }
+            else
+            {
+                this.ShowMessageAsync("Ошибка!", "Для выполенния операции удаления элемента из списка необходимо выбрать этот элемент!");
+            }
+            
         }
         private void MenuData_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            this._clentNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.MenuCodes.MENU_GET_CODE, 100);
-            if(this._clentNetwork.Response != null)
+            var clentNetwork = new NetworkMiddleware.Client();
+            if(clentNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.MenuCodes.MENU_GET_CODE, 100))
             {
-                var payload = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(this._clentNetwork.Response);
+                (this.DataContext as ViewModel.MenuViewModel).Menus.Clear();
+
+                var payload = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(clentNetwork.Response);
                 foreach(var element in Newtonsoft.Json.JsonConvert.DeserializeObject<List<AdminPanel.NetworkMiddleware.NetworkData.Menu>>(payload.Reponse))
                 {
                     (this.DataContext as ViewModel.MenuViewModel).Menus.Add(new Models.Menu
@@ -100,28 +112,19 @@ namespace AdminPanel.Views.Menu
         {
             var excel = ExportToXls.GenerateExcel(ExportToXls.ToDataTable((this.DataContext as ViewModel.MenuViewModel).Menus), this.MenuData);
             Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.FileName = "Menu_backup"; // Default file name
-            dlg.DefaultExt = ".xls"; // Default file extension
-           // dlg.Filter = "Excel sheets(.xls)"; // Filter files by extension
+            dlg.FileName = "Menu_backup"; 
+            dlg.DefaultExt = ".xls"; 
 
-            // Show save file dialog box
             Nullable<bool> result = dlg.ShowDialog();
 
-            // Process save file dialog box results
             if (result == true)
             {
-                // Save document
                 string filename = dlg.FileName;
                 excel.Workbooks[1].SaveAs(System.IO.Path.Combine(filename));
             }
-
-
-
             excel.Workbooks[1].Close();
             excel.Quit();
         }
-
-        
 
         private void Refresh_Click(object sender, System.Windows.RoutedEventArgs e)
         {
@@ -146,14 +149,7 @@ namespace AdminPanel.Views.Menu
 
         private void Delete_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if( (this.DataContext as ViewModel.MenuViewModel).SelectedMenu != null)
-            {
-                (this.DataContext as ViewModel.MenuViewModel).Menus.Remove((this.DataContext as ViewModel.MenuViewModel).SelectedMenu);
-            }
-            else
-            {
-                this.ShowMessageAsync("Ошибка!", "Для выполнения операции Удалить, необходимо выбрать элемент в таблице!");
-            }
+            RemoveElement_Click(sender, e);
         }
     }
 }

@@ -8,6 +8,20 @@
         mc:Ignorable="d"
         Title="Добавить должность" Height="450" Width="800">
     <Grid>
-        
+         <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" FontSize="25" Text="Название: " HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBox x:Name="Position_Input" Grid.Row="0" Grid.Column="1" FontSize="25" Margin="25"/>
+        <Button x:Name="AddNewPosition" Content="Добавить новую должность" Grid.Row="2" Grid.ColumnSpan="2" Margin="30" FontSize="25"
+                   Click="AddNewPosition_Click"
+                />
     </Grid>
 </Controls:MetroWindow>

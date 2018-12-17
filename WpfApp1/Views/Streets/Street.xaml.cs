@@ -9,13 +9,12 @@ namespace AdminPanel.Views.Streets
     public partial class Street : MetroWindow
     {
         private ApplicationMemory.MemoryBuild _memory;
-        private NetworkMiddleware.Client _clientNetwork;
+        public string Name = "Street";
 
         public Street()
         {
             InitializeComponent();
             this.DataContext = new StreetViewModel();
-            this._clientNetwork = new NetworkMiddleware.Client();
         }
 
         public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
@@ -34,7 +33,22 @@ namespace AdminPanel.Views.Streets
 
         private void RemoveElement_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-
+            if((this.DataContext as ViewModel.StreetViewModel).SelectedStreet != null)
+            {
+                var clientNetwork = new NetworkMiddleware.Client();
+                if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.StreetCodes.STREET_DELETE_CODE, (this.DataContext as ViewModel.StreetViewModel).SelectedStreet.Id))
+                {
+                    this.ShowMessageAsync("Операция выполнена успешно!", "Выбранный элемент был удалён из бд!");
+                }
+                else
+                {
+                    this.ShowMessageAsync("Ошибка!", "Выбранный элемент не может быть удалён из бд, т.к. он связан с другими записями в других таблицах!");
+                }
+            }
+            else
+            {
+                this.ShowMessageAsync("Ошибка!", "Для выполнения данной операции необходимо выбрать элемент в таблице!");
+            }
         }
 
         private void AddNewElement_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -42,20 +56,15 @@ namespace AdminPanel.Views.Streets
             var windowForAdding = new StreetsAdd();
             this._memory.AddToHistory("StreetAdd");
             windowForAdding.ShowDialog();
-            if(this._clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.StreetCodes.STREET_GET_CODE, 1000, (this.DataContext as ViewModel.StreetViewModel).Streets.Count))
-            {
-                var response = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(this._clientNetwork.Response);
-                foreach(var element in Newtonsoft.Json.JsonConvert.DeserializeObject<List<NetworkMiddleware.NetworkData.Street>>(response.Reponse))
-                {
-                    (this.DataContext as ViewModel.StreetViewModel).Streets.Add(new Models.Street
-                    {
-                        Id = element.Id,
-                        Name = element.Name
-                    });
-                }
-            }
 
-            this.ShowMessageAsync("Результат добавления", (bool)windowForAdding.DialogResult ? "Улица была успешно добавлена" : "К сожалению возникли неполадки при добавлении новой улицы! За более подробной информацией обратитесь к программисту!");
+            if ((bool)windowForAdding.DialogResult)
+            {
+                this.ShowMessageAsync("Операция выполнена успешно!", "Был добавлен новый элемент в бд!");
+            }
+            else
+            {
+                this.ShowMessageAsync("Ошибка!", "Неудалось завершить операцию корректно! Пожалуйста, обратитесь к разработчику!");
+            }
             
         }
 
@@ -74,9 +83,12 @@ namespace AdminPanel.Views.Streets
         
         private void StreetData_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            if(this._clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.StreetCodes.STREET_GET_CODE, 100))
+            var clientNetwork = new NetworkMiddleware.Client();
+            if(clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.StreetCodes.STREET_GET_CODE, 100))
             {
-                var response = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(this._clientNetwork.Response);
+                (this.DataContext as ViewModel.StreetViewModel).Streets.Clear();
+
+                var response = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(clientNetwork.Response);
 
                 foreach (var element in Newtonsoft.Json.JsonConvert.DeserializeObject<List<NetworkMiddleware.NetworkData.Street>>(response.Reponse))
                     (this.DataContext as ViewModel.StreetViewModel).Streets.Add(new Models.Street
@@ -85,17 +97,21 @@ namespace AdminPanel.Views.Streets
                         Name = element.Name
                     });
             }
+            else
+            {
+                this.ShowMessageAsync("Ошибка!", "Неудалось загрузить данные с сервера! Пожалуйста обратитесь к разработчику!");
+            }
             
         }
 
         private void Refresh_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-
+            StreetData_Loaded(sender, e);
         }
 
         private void Delete_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-
+            RemoveElement_Click(sender, e);
         }
     }
 }

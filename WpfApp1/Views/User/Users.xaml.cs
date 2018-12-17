@@ -1,6 +1,7 @@
 ﻿using AdminPanel.ViewModel;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using System.Collections.Generic;
 using System.Windows;
 
@@ -9,13 +10,12 @@ namespace AdminPanel.Views.User
     public partial class Users : MetroWindow
     {
         private ApplicationMemory.MemoryBuild _memory;
-        private NetworkMiddleware.Client _clientNetwork;
+        public string Name = "Users";
 
         public Users()
         {
             InitializeComponent();
             this.DataContext = new UserViewModel();
-            this._clientNetwork = new NetworkMiddleware.Client();
         }
         public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
         {
@@ -46,7 +46,7 @@ namespace AdminPanel.Views.User
 
         private void RemoveElement_Click(object sender, RoutedEventArgs e)
         {
-
+            Delete_Click(sender, e);
         }
 
         private void TraceRoute_Click(object sender, RoutedEventArgs e)
@@ -62,14 +62,18 @@ namespace AdminPanel.Views.User
         {
             var windowForAdding = new UserAdd();
             this._memory.AddToHistory("UserAdd");
+            windowForAdding.SetMemoryDump(this._memory);
             windowForAdding.ShowDialog();
         }
 
         private void UsersData_Loaded(object sender, RoutedEventArgs e)
         {
-            if(this._clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.UserCodes.USER_GET_CODE, 100))
+            var clientNetwork = new NetworkMiddleware.Client();
+            if(clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.UserCodes.USER_GET_CODE, 100))
             {
-                var response = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(this._clientNetwork.Response);
+                var response = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(clientNetwork.Response);
+
+                (this.DataContext as ViewModel.UserViewModel).Users.Clear();
 
                 foreach(var element in Newtonsoft.Json.JsonConvert.DeserializeObject<List<NetworkMiddleware.NetworkData.UserNetwork>>(response.Reponse))
                 {
@@ -83,16 +87,35 @@ namespace AdminPanel.Views.User
                     });
                 }
             }
+            else
+            {
+                this.ShowMessageAsync("Ошибка!", "Неудалось загрузить данные с сервера! Пожалуйста, обратитесь к разработчику!");
+            }
         }
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-
+            UsersData_Loaded(sender, e);
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-
+            if((this.DataContext as ViewModel.UserViewModel).SelectedUser != null)
+            {
+                var clientNetwork = new NetworkMiddleware.Client();
+                if(clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.UserCodes.USER_DELETE_CODE, (this.DataContext as ViewModel.UserViewModel).SelectedUser.Id))
+                {
+                    this.ShowMessageAsync("Операция выполнена успешно!", "Выбранный пользователь был удалён из бд!");
+                }
+                else
+                {
+                    this.ShowMessageAsync("Ошибка!", "Выбранный пользователь не может быть удалён, поскольку он связан с записями в других таблицах!");
+                }
+            }
+            else
+            {
+                this.ShowMessageAsync("Ошибка!", "Для выполнения операции удалить необходимо выбрать элемент в таблице!");
+            }
         }
     }
 }

@@ -11,14 +11,14 @@ namespace AdminPanel.Views.Dish
     public partial class Dish : MetroWindow
     {
         private ApplicationMemory.MemoryBuild _memory;
-        private Client _networkClient;
+        public string Name = "Dish";
 
         public static event Events.EventForDataForm.AddNewData<NetworkMiddleware.NetworkData.Dish> Dishes;
         public Dish()
         {
             InitializeComponent();
             DataContext = new ViewModel.DishViewModel();
-            this._networkClient = new Client();
+
             Dishes += UpdateDataOnForm;
             (this.DishData as DataGrid).RowHeight = 100;
         }
@@ -33,9 +33,11 @@ namespace AdminPanel.Views.Dish
 
         private void DishData_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            this._networkClient.RequestHandle(NetworkMiddleware.NetworkResponseCodes.DishCodes.DISH_GET_CODE, 100);
-            if(this._networkClient.State.LastResponse != null)
-                foreach (var elementRecieved in (Newtonsoft.Json.JsonConvert.DeserializeObject<List<NetworkMiddleware.NetworkData.Dish>>(this._networkClient.State.LastResponse)))
+            var networkClient = new NetworkMiddleware.Client();
+            (this.DataContext as ViewModel.DishViewModel).Dishes.Clear();
+
+            if(networkClient.RequestHandle(NetworkMiddleware.NetworkResponseCodes.DishCodes.DISH_GET_CODE, 100))
+                foreach (var elementRecieved in (Newtonsoft.Json.JsonConvert.DeserializeObject<List<NetworkMiddleware.NetworkData.Dish>>(networkClient.State.LastResponse)))
                     (this.DataContext as ViewModel.DishViewModel).Dishes.Add(new Models.Dish() { Id = elementRecieved.Id, Name= elementRecieved.Name, OutPrice = elementRecieved.Outer.ToString(), Recipe = string.Join("\n", elementRecieved.Products.ToArray())});
         }
 
@@ -46,7 +48,16 @@ namespace AdminPanel.Views.Dish
 
         private void RemoveElement_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-
+            var clinetNetwork = new NetworkMiddleware.Client();
+            if(clinetNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.DishCodes.DISH_DELETE_CODE, (this.DataContext as ViewModel.DishViewModel).SelectedDish.Id))
+            {
+                this.DishData_Loaded(sender, e);
+                this.ShowMessageAsync("Операция выполнена успешно!", "Выбранное блюдо было удалено из бд!");
+            }
+            else
+            {
+                this.ShowMessageAsync("Ошибка!", "Выбранное блюдо невозможно удалить из бд, т.к. есть связи с другими таблицами!");
+            }
         }
 
         private void AddNewElement_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -55,7 +66,15 @@ namespace AdminPanel.Views.Dish
             this._memory.AddToHistory("DishAdd");
             windowAddingNewElement.SetMemoryDump(this._memory);
             windowAddingNewElement.ShowDialog();
-            
+
+            if((bool)windowAddingNewElement.DialogResult)
+            {
+                this.ShowMessageAsync("Операция выполнена успешно!", "Новое блюдо было добавлено в бд!");
+            }
+            else
+            {
+                this.ShowMessageAsync("Ошибка!", "Не удалось добавить блюдо в бд!");
+            }
         }
 
         private void TraceRoute_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -89,12 +108,12 @@ namespace AdminPanel.Views.Dish
 
         private void Refresh_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-
+            DishData_Loaded(sender, e);
         }
 
         private void Delete_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-
+            RemoveElement_Click(sender, e);
         }
     }
 }

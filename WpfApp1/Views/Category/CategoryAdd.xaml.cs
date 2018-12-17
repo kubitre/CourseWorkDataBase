@@ -24,5 +24,21 @@ namespace AdminPanel.Views.Category
         {
             InitializeComponent();
         }
+
+        private void AddNewCategory_Click(object sender, RoutedEventArgs e)
+        {
+            if(string.IsNullOrEmpty(this.Category_Input.Text) | string.IsNullOrWhiteSpace(this.Category_Input.Text))
+            {
+                var clientNetwork = new NetworkMiddleware.Client();
+                if(clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.CategoryCodes.CATEGORY_CREATE_CODE, this.Category_Input.Text))
+                {
+                    this.DialogResult = true;
+                }
+                else
+                {
+                    this.DialogResult = false;
+                }
+            }
+        }
     }
 }
