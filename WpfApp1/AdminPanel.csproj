@@ -88,15 +88,19 @@
     <Compile Include="Connection.xaml.cs">
       <DependentUpon>Connection.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Cooperator.cs" />
     <Compile Include="Models\Menu.cs" />
+    <Compile Include="Models\Position.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\Street.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="ApplicationMemory\SettingsTheme.cs" />
+    <Compile Include="ViewModel\CategoryViewModel.cs" />
     <Compile Include="ViewModel\CooperatorViewModel.cs" />
     <Compile Include="ViewModel\MenuViewModel.cs" />
+    <Compile Include="ViewModel\PositionViewModel.cs" />
     <Compile Include="ViewModel\ProductViewModel.cs" />
     <Compile Include="ViewModel\StreetViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
