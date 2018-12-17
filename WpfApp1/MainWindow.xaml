@@ -20,9 +20,42 @@
         </ResourceDictionary>
     </Window.Resources>
 
+     <Controls:MetroWindow.Flyouts>
+        <Controls:FlyoutsControl x:Name="FlyoutControls">
+             <Controls:Flyout x:Name="AboutMe" Header="К Разработчику" Position="Right" Width="auto" Height="200" IsModal="True" Theme="Dark" CloseButtonVisibility="Visible" IsOpen="False"  AreAnimationsEnabled="True">
+                <TextBlock Text="Репозиторий автора проекта: https://github.com/kubitre/" Margin="50" FontSize="18"/>
+            </Controls:Flyout>
+            <Controls:Flyout x:Name="AboutApp" Header="О приложении" Position="Bottom" Width="auto" Height="auto" IsModal="False" Theme="Accent" CloseButtonVisibility="Visible" IsOpen="False"  AreAnimationsEnabled="True">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock FontSize="22" FontFamily="Times New Roman" Text="Приложение администратора для курсовой работы по Базам данных" Grid.Row="0"/>
+                    <TextBlock FontSize="22" FontFamily="Times New Roman" Text="Разработчик Аносов Константин Геннадьевич" Grid.Row="1" Margin="0 50 0 0"/>
+                    <TextBlock FontSize="22" FontFamily="Times New Roman" Text="Версия приложения: 0.0.3" Grid.Row="2"/>
+                </Grid>
+            </Controls:Flyout>
+            <Controls:Flyout x:Name="SettingsPanel" Header="Настройки" Position="Top" Width="auto" Height="auto" IsModal="True" Theme="Adapt" CloseButtonVisibility="Visible" IsOpen="False"  AreAnimationsEnabled="True">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Controls:ToggleSwitch x:Name="SwithcTheme" Header="Настройка темы" OnLabel="Светлая тема" OffLabel="Тёмная тема"  Click="SwithcTheme_Click"/>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <TextBlock Text="Настройка представления"/>
+                    </Grid>
+                </Grid>
+            </Controls:Flyout>
+        </Controls:FlyoutsControl>
+    </Controls:MetroWindow.Flyouts>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <Button>
+            <Button x:Name="SettingsPanels" Click="SettingsPanels_Click">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="20"
                    Height="20"
@@ -36,7 +69,7 @@
                    Text="Настройки" />
                 </StackPanel>
             </Button>
-            <Button>
+            <Button x:Name="AboutApplication" Click="AboutApplication_Click">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="20"
                    Height="20"
@@ -50,7 +83,7 @@
                    Text="О приложении" />
                 </StackPanel>
             </Button>
-            <Button>
+            <Button x:Name="AboutMeButton" Click="AboutMeButton_Click">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="20"
                    Height="20"
@@ -66,6 +99,7 @@
             </Button>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
+    
     <Grid x:Name="MainWindowSSSS">
         <Grid.RowDefinitions>
             <RowDefinition Height="99*"/>
@@ -79,11 +113,13 @@
         </Grid.ColumnDefinitions>
 
 
+        <TextBlock x:Name="roleUser" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Ваша роль:" Foreground="White" FontSize="17"/>
+
         <Border Grid.Column="1" Grid.Row="0" Background="Orange" HorizontalAlignment="Center" VerticalAlignment="Center" Width="334" Height="34" Margin="161,32,145,33">
             <Button x:Name="TraceRoute" Content="Панель администратора" Foreground="White" Background="Orange" FontSize="20" FontFamily="Times New Roman" Margin="10,0"/>
         </Border>
 
-        <Border  Grid.Column="2" CornerRadius="15, 15, 15, 15" Background="Orange" Padding="5 5" Margin="0,30,118,0" Height="40" VerticalAlignment="Top" HorizontalAlignment="Right" Width="95">
+        <Border  Grid.Column="2" CornerRadius="15, 15, 15, 15" Background="Orange" Padding="1 1" Margin="0,30,118,0" Height="auto" VerticalAlignment="Top" HorizontalAlignment="Right" Width="auto">
             <Menu  Background="Orange" BorderThickness="0">
                 <MenuItem x:Name="UserName" Header="Username">
                     <MenuItem x:Name="MySettingsItem" Header="Мои настройки" Click="MySettingsItem_Click"/>
@@ -93,7 +129,7 @@
             </Menu>
         </Border>
 
-        <ListView ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto"  Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2">
+        <ListView x:Name="MainMenu" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto"  Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Background="Transparent" Orientation="Horizontal">
@@ -101,18 +137,7 @@
                     </StackPanel>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
-            <ListBoxItem Margin="20" Background="Orange">
-                <Button x:Name="CooperatorsWindow" Padding="150" Content="Сотрудники" Background="Transparent" BorderThickness="0" FontSize="25" FontFamily="Times New Roman" Click="CooperatorsWindow_Click"/>
-            </ListBoxItem>
-            <ListBoxItem Margin="20" Background="Orange">
-                <Button Padding="150" x:Name="DishesWindow" Content="Блюда" Background="Transparent" BorderThickness="0" FontSize="25" FontFamily="Times New Roman" Click="DishesWindow_Click"/>
-            </ListBoxItem>
-            <ListBoxItem Margin="20"  Background="Orange">
-                <Button x:Name="MenusWindow" Padding="150" Content="Меню" Background="Transparent" BorderThickness="0" FontFamily="Times New Roman" FontSize="25" Click="MenusWindow_Click"/>
-            </ListBoxItem>
-            <ListBoxItem Margin="20"  Background="Orange">
-                <Button x:Name="UsersWindow" Padding="150" Content="Пользователи" Background="Transparent" BorderThickness="0" FontFamily="Times New Roman" FontSize="25" Click="UsersWindow_Click"/>
-            </ListBoxItem>
+            
         </ListView>
     </Grid>
 </Controls:MetroWindow>
