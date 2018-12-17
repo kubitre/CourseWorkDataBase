@@ -20,6 +20,6 @@
         <Controls:ProgressRing x:Name="progressBar" Height="162" Margin="317,68,313,0" Width="162" VerticalAlignment="Top" />
         <Label x:Name="ConnectionStart" Content="Подключение к серверу" FontFamily="Times New Roman" FontSize="25" HorizontalAlignment="Center" Margin="264,0" Height="192" VerticalAlignment="Bottom"/>
         <Label x:Name="ReconnectionTimeOut" Content="{Binding TimeOutP}" Visibility="Visible" FontSize="25" HorizontalAlignment="Center" Margin="246,0" Height="192" VerticalAlignment="Bottom"/>
-        <Label x:Name="ErrorConnected" Visibility="Hidden" FontSize="40" HorizontalAlignment="Center"/>
+        <Label x:Name="ErrorConnected" Content="Ошибка подключения!" Visibility="Hidden" FontSize="40" HorizontalAlignment="Center"/>
     </Grid>
 </Window>

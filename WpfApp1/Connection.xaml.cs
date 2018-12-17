@@ -11,6 +11,9 @@ namespace AdminPanel
     /// </summary>
     public partial class Connection : Window
     {
+        private ApplicationMemory.MemoryBuild _memory;
+        private Client _networkClient;
+
         private Timer timer;
         private bool threadStart = false;
 
@@ -23,6 +26,10 @@ namespace AdminPanel
         {
             InitializeComponent();
             Start += StartNewLoginSession;
+            this._networkClient = new Client();
+            this._networkClient.GetExceptionOutput += Client_GetExceptionOutput;
+
+            this._memory = new ApplicationMemory.MemoryBuild();
 
             if (!threadStart)
             {
@@ -33,11 +40,20 @@ namespace AdminPanel
             }
         }
 
+        private void Client_GetExceptionOutput(string message)
+        {
+            this.Dispatcher.Invoke(() => this.ErrorConnected.Visibility = Visibility.Visible);
+            this.Dispatcher.Invoke(() => this.ConnectionStart.Visibility = Visibility.Hidden);
+            this.Dispatcher.Invoke(() => this.ReconnectionTimeOut.Visibility = Visibility.Visible); 
+        }
+
         private void StartNewLoginSession(bool start)
         {
             if(start)
             {
                 var Login = new LoginPage();
+                this._memory.AddToHistory("LoginPage");
+                Login.SetMemoryDump(this._memory);
                 Login.Show();
                 this.Close();
             }
@@ -64,7 +80,7 @@ namespace AdminPanel
                 this.Dispatcher.Invoke(() => this.ReconnectionTimeOut.Visibility = Visibility.Hidden);
                 this.Dispatcher.Invoke(() => this.ConnectionStart.Visibility = Visibility.Visible);
 
-                if (Client.RequestHandle(NetworkMiddleware.NetworkSignal.TestConnection_action.ActionType))
+                if (this._networkClient.RequestHandle(NetworkMiddleware.NetworkSignal.TestConnection_action.ActionType))
                 {
                     break;
                 }
