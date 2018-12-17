@@ -29,5 +29,23 @@ namespace AdminPanel.Models
                     return "";
             }
         }
+
+        public static int GetIndexRole(string role)
+        {
+            switch (role)
+            {
+                case "Administrator":
+                    return 0;
+
+                case "Programmer":
+                    return 1;
+
+                case "Calculator":
+                    return 2;
+
+                default:
+                    return -1;
+            }
+        }
     }
 }
