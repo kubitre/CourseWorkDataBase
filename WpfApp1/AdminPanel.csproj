@@ -44,6 +44,10 @@
     <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net46\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -74,16 +78,45 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ApplicationMemory\Configuration.cs" />
+    <Compile Include="ApplicationMemory\CooperatorMemory.cs" />
+    <Compile Include="ApplicationMemory\DishMemory.cs" />
+    <Compile Include="ApplicationMemory\ExportToXls.cs" />
+    <Compile Include="ApplicationMemory\MemoryBuild.cs" />
+    <Compile Include="ApplicationMemory\MenuMemory.cs" />
+    <Compile Include="ApplicationMemory\UserMemory.cs" />
     <Compile Include="Connection.xaml.cs">
       <DependentUpon>Connection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Cooperator.xaml.cs">
+    <Compile Include="Models\Cooperator.cs" />
+    <Compile Include="Models\Menu.cs" />
+    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\Street.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="ApplicationMemory\SettingsTheme.cs" />
+    <Compile Include="ViewModel\CooperatorViewModel.cs" />
+    <Compile Include="ViewModel\MenuViewModel.cs" />
+    <Compile Include="ViewModel\ProductViewModel.cs" />
+    <Compile Include="ViewModel\StreetViewModel.cs" />
+    <Compile Include="ViewModel\UserViewModel.cs" />
+    <Compile Include="Views\Category\Category.xaml.cs">
+      <DependentUpon>Category.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Category\CategoryAdd.xaml.cs">
+      <DependentUpon>CategoryAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Cooperator\Cooperator.xaml.cs">
       <DependentUpon>Cooperator.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dish.xaml.cs">
+    <Compile Include="Views\Cooperator\CooperatorAdd.xaml.cs">
+      <DependentUpon>CooperatorAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Cooperator\Models\Address.cs" />
+    <Compile Include="Views\Dish\Dish.xaml.cs">
       <DependentUpon>Dish.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DishAdd.xaml.cs">
+    <Compile Include="Views\Dish\DishAdd.xaml.cs">
       <DependentUpon>DishAdd.xaml</DependentUpon>
     </Compile>
     <Compile Include="ElementMainMneu.xaml.cs">
@@ -92,40 +125,49 @@
     <Compile Include="ErrorConnect.xaml.cs">
       <DependentUpon>ErrorConnect.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Menu.xaml.cs">
+    <Compile Include="Events\EventForDataForm.cs" />
+    <Compile Include="Views\Menu\Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\AuthBlock.cs" />
     <Compile Include="Models\ActionResult.cs" />
     <Compile Include="Models\Dish.cs" />
     <Compile Include="Models\Payloads\AuthPayload.cs" />
     <Compile Include="Models\Payloads\Payload.cs" />
-    <Compile Include="NetworkMiddleware\Client.cs" />
-    <Compile Include="NetworkMiddleware\HandlersAfterRequesting\HandleAuthentification.cs" />
-    <Compile Include="NetworkMiddleware\HandlersAfterRequesting\IActiontResponse.cs" />
-    <Compile Include="NetworkMiddleware\HandlersForRequest\ConnectionCallBack.cs" />
-    <Compile Include="NetworkMiddleware\HandlersForRequest\RecieveCallBack.cs" />
-    <Compile Include="NetworkMiddleware\HandlersForRequest\RecieveData.cs" />
-    <Compile Include="NetworkMiddleware\HandlersForRequest\SendCallBack.cs" />
-    <Compile Include="NetworkMiddleware\HandlersForRequest\SendData.cs" />
-    <Compile Include="NetworkMiddleware\NetworkData\Cooperator.cs" />
-    <Compile Include="NetworkMiddleware\NetworkData\Dish.cs" />
-    <Compile Include="NetworkMiddleware\NetworkData\Menu.cs" />
-    <Compile Include="NetworkMiddleware\NetworkData\User.cs" />
-    <Compile Include="NetworkMiddleware\NetworkSignal\Authentification_action.cs" />
-    <Compile Include="NetworkMiddleware\NetworkSignal\ISignal.cs" />
-    <Compile Include="NetworkMiddleware\NetworkSignal\Dish_action.cs" />
-    <Compile Include="NetworkMiddleware\NetworkSignal\Menu_action.cs" />
-    <Compile Include="NetworkMiddleware\NetworkSignal\TestConnection_action.cs" />
-    <Compile Include="NetworkMiddleware\StateObject.cs" />
-    <Compile Include="PanelWithData.xaml.cs">
-      <DependentUpon>PanelWithData.xaml</DependentUpon>
-    </Compile>
     <Compile Include="StateObject.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="Validation.cs" />
     <Compile Include="Verification.cs" />
     <Compile Include="ViewModel\DishViewModel.cs" />
+    <Compile Include="Views\Menu\Menuadd.xaml.cs">
+      <DependentUpon>Menuadd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Position\Position.xaml.cs">
+      <DependentUpon>Position.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Position\PositionAdd.xaml.cs">
+      <DependentUpon>PositionAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Products\Products.xaml.cs">
+      <DependentUpon>Products.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Products\ProductsAdd.xaml.cs">
+      <DependentUpon>ProductsAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Streets\Street.xaml.cs">
+      <DependentUpon>Street.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Streets\StreetsAdd.xaml.cs">
+      <DependentUpon>StreetsAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\User\PersonalSettings.xaml.cs">
+      <DependentUpon>PersonalSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\User\UserAdd.xaml.cs">
+      <DependentUpon>UserAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\User\Users.xaml.cs">
+      <DependentUpon>Users.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LoginPage.xaml.cs">
@@ -166,15 +208,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Cooperator.xaml">
+    <Page Include="Views\Category\Category.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dish.xaml">
+    <Page Include="Views\Category\CategoryAdd.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DishAdd.xaml">
+    <Page Include="Views\Cooperator\Cooperator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Cooperator\CooperatorAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dish\Dish.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dish\DishAdd.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -194,11 +248,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Menu.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PanelWithData.xaml">
+    <Page Include="Views\Menu\Menu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -209,6 +259,46 @@
     <Page Include="Resources\IconsNonShared.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Menu\Menuadd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Position\Position.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Position\PositionAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Products\Products.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Products\ProductsAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Streets\Street.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Streets\StreetsAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\User\PersonalSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\User\UserAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\User\Users.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -222,6 +312,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="plus_white_625674.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetworkMiddleware\NetworkMiddleware.csproj">
+      <Project>{ef312413-c064-41a0-a2fc-55efc0195280}</Project>
+      <Name>NetworkMiddleware</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
