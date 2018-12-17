@@ -1,7 +1,10 @@
-﻿using DatabaseMiddlware.ObjectsAfterDb;
+﻿using DatabaseMiddlware.Models;
+using DatabaseMiddlware.ObjectsAfterDb;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dish = DatabaseMiddlware.ObjectsAfterDb.Dish;
 
 namespace DatabaseMiddlware.Workers.Dishes
 {
@@ -33,19 +36,21 @@ namespace DatabaseMiddlware.Workers.Dishes
                 if (recipe == null)
                     throw new ArgumentException($"recipe for dish id [{id}] was not exist in database");
 
-                var productsInDish = from recipeProduct in context.Recipes
-                                     join product in context.Products on recipeProduct.Product.Id equals product.Id
-                                     select new { Name = product.Name, Amount = recipeProduct.Amount, Price = product.Price };
+                //var productsInDish = from recipeProduct in context.Recipes
+                //                     join product in context.Products on recipeProduct.Product.Id equals product.Id
+                //                     select new { Name = product.Name, Amount = recipeProduct.Amount, Price = product.Price };
+
+                var productsInDish = Workers.Products.ProductHandler.GetProductsByDish(dish.Name);
 
                 var outer = 0.0;
 
                 var products = new List<string>();
 
-                foreach(var element in productsInDish.ToList())
-                {
-                    outer += element.Price * element.Amount;
-                    products.Add($"{element.Name} ({element.Amount} x {element.Price})");
-                }
+                //foreach(var element in productsInDish)
+                //{
+                //    outer += element.Price ;
+                //    products.Add($"{element.Name} ({element.Amount} x {element.Price})");
+                //}
 
                 return new Dish()
                 {
@@ -63,41 +68,92 @@ namespace DatabaseMiddlware.Workers.Dishes
             {
                 var dishes = context.Dishes.Skip(offset).Take(count).ToList();
                 var result = new List<Dish>();
-                
-                foreach(var element in dishes)
+
+                foreach(var elementInDish in dishes)
                 {
-                    var recipe = context.Recipes.Where(x => x.Dish.Id == element.Id).ToList();
-                    if (recipe == null)
-                        throw new ArgumentException($"recipe for dish id [{element.Id}] was not exist in database");
+                    var productsInCurrentDish = context.Recipes
+                                                            .Where(x => x.Dish.Equals(elementInDish))
+                                                            .Include(x => x.Dish)
+                                                            .Include(x => x.Product);
+                                                                
 
-                    var productsInDish = from recipeProduct in context.Recipes
-                                         join product in context.Products on recipeProduct.Product.Id equals product.Id
-                                         select new { Name = product.Name, Amount = recipeProduct.Amount, Price = product.Price };
-
+                    var listProducts = new List<string>();
                     var outer = 0.0;
 
-                    var products = new List<string>();
-
-                    foreach (var elementinProducts in productsInDish.ToList())
+                    foreach(var elementProduct in productsInCurrentDish)
                     {
-                        outer += elementinProducts.Price * elementinProducts.Amount;
-                        products.Add($"{elementinProducts.Name} ({elementinProducts.Amount} x {elementinProducts.Price})");
+                        outer += elementProduct.Amount * elementProduct.Product.Price;
+                        listProducts.Add($"{elementProduct.Product.Name} ({elementProduct.Amount} x {elementProduct.Product.Price})");
                     }
 
-                    result.Add(new Dish()
-                    {
-                        Id = element.Id,
-                        Name = element.Name,
-                        Outer = outer,
-                        Products = products
-                    });
+                    result.Add(new Dish() { Id = elementInDish.Id, Name = elementInDish.Name, Outer = outer, Products=listProducts});
                 }
 
+                //foreach(var element in dishes)
+                //{
+                //    var recipes = context.Recipes.Where(x => x.Dish.Id == element.Id).ToList();
+                //    if (recipes == null)
+                //        throw new ArgumentException($"recipe for dish id [{element.Id}] was not exist in database");
+
+                //    //var productsInDish = from recipeProduct in context.Recipes
+                //    //                     join product in context.Products on recipeProduct.Product.Id equals product.Id
+                //    //                     select new { Name = product.Name, Amount = recipeProduct.Amount, Price = product.Price };
+
+                //    var productsInDish = new List<DatabaseMiddlware.InternalNeeds.Dishes>();
+
+                //    foreach(var elementRecipeDish in recipes)
+                //    {
+                //        var product = context.Products.Where(x => x.Id.Equals(elementRecipeDish.Id)).FirstOrDefault();
+                //        //productsInDish.Add(new InternalNeeds.Dishes() {Id =  });
+                //    }
+
+                //    var outer = 0.0;
+
+                //    var products = new List<string>();
+
+                //    //TODO: DANGEROUS!
+
+                //    //foreach (var elementinProducts in productsInDish)
+                //    //{
+                //    //    outer += elementinProducts.Price * elementinProducts;
+                //    //    products.Add($"{elementinProducts.Name}({elementinProducts.Amount}x{elementinProducts.Price})");
+                //    //}
+
+                //    //result.Add(new Dish()
+                //    //{
+                //    //    Id = element.Id,
+                //    //    Name = element.Name,
+                //    //    Outer = outer,
+                //    //    Products = products
+                //    //});
+                //}
+
+                //return result;
                 return result;
             }
         }
 
-        public static void RemoveDish(string name)
+        public static bool UpdateDish(Guid idDish, ObjectsAfterDb.Dish dish)
+        {
+            using(var context = new Context())
+            {
+                var dishFromDb = context.Dishes.FirstOrDefault(x => x.Id.Equals(idDish));
+
+                try
+                {
+                    dishFromDb.Name = dish.Name;
+
+                    context.SaveChanges();
+                    return true;
+                }
+                catch(Exception ex)
+                {
+                    return false;
+                }
+            }
+        }
+
+        public static bool RemoveDish(string name)
         {
             using (var context = new Context())
             {
@@ -106,13 +162,22 @@ namespace DatabaseMiddlware.Workers.Dishes
                 if (dishFromBd == null)
                     throw new ArgumentException($"dish by name [{name}] was not exist in database!");
 
-                context.Dishes.Remove(dishFromBd);
-                context.SaveChanges();
+                try
+                {
+                    context.Dishes.Remove(dishFromBd);
+                    context.SaveChanges();
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
             }
 
         }
 
-        public static void RemoveDish(Guid id)
+        public static bool RemoveDish(Guid id)
         {
             using(var context = new Context())
             {
@@ -121,8 +186,16 @@ namespace DatabaseMiddlware.Workers.Dishes
                 if (dishFromDb == null)
                     throw new ArgumentException($"dish by id [{id}] was not exist in database!");
 
-                context.Dishes.Remove(dishFromDb);
-                context.SaveChanges();
+                try
+                {
+                    context.Dishes.Remove(dishFromDb);
+                    context.SaveChanges();
+                    return true;
+                }
+                catch(Exception ex)
+                {
+                    return false;
+                }
             }
         }
     }

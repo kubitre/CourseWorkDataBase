@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using DatabaseMiddlware.ObjectsAfterDb;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
-namespace DatabaseMiddlware.Workers
+namespace DatabaseMiddlware.Workers.Cooperators
 {
-    class CooperatorHandler
+    public class CooperatorHandler
     {
         public static void AddCooperator(Guid creator, Cooperator cooperator)
         {
@@ -38,6 +39,41 @@ namespace DatabaseMiddlware.Workers
                 });
 
                 context.SaveChanges();
+            }
+        }
+
+        public static List<Cooperator> GetCooperators(int offset, int amount)
+        {
+            using (var context = new Context())
+            {
+                var result = new List<Cooperator>();
+
+                var cooperators = context
+                                            .Cooperators
+                                            .Skip(offset)
+                                            .Take(amount)
+                                            .Include(x => x.Category)
+                                            .Include(x => x.Position)
+                                            .Include(x => x.Street)
+                                            .ToList();
+
+                foreach (var element in cooperators)
+                    result.Add(new Cooperator
+                    {
+                        Id = element.Id,
+                        BirthDay = element.BirthDay,
+                        Building = element.Building,
+                        Category = element.Category.Name,
+                        FirstName = element.FirstName,
+                        MiddleName = element.MiddleName,
+                        Flat = element.Flat,
+                        LastName = element.LastName,
+                        Position = element.Position.Name,
+                        Salary = element.Salary,
+                        Street = element.Street.Name
+                    });
+
+                return result;
             }
         }
 
@@ -98,7 +134,7 @@ namespace DatabaseMiddlware.Workers
             }
         }
 
-        public static void UpdateCooperator(Guid idCooperator, Cooperator cooperator)
+        public static bool UpdateCooperator(Guid idCooperator, Cooperator cooperator)
         {
             using (var context = new Context())
             {
@@ -156,12 +192,19 @@ namespace DatabaseMiddlware.Workers
 
                 if (cooperator.Flat != 0)
                     cooperatorFromDb.Flat = cooperator.Flat;
-
-                context.SaveChanges();
+                try
+                {
+                    context.SaveChanges();
+                    return true;
+                }
+                catch(Exception ex)
+                {
+                    return false;
+                }
             }
         }
 
-        public static void DeleteCooperator(Guid idCooperator)
+        public static bool DeleteCooperator(Guid idCooperator)
         {
             using (var context = new Context())
             {
@@ -170,9 +213,18 @@ namespace DatabaseMiddlware.Workers
                 if (cooperatorFromDb == null)
                     throw new ArgumentException($"cooperator by id [{idCooperator}] was not exist in database!");
 
-                context.Cooperators.Remove(cooperatorFromDb);
+                try
+                {
+                    context.Cooperators.Remove(cooperatorFromDb);
+                    context.SaveChanges();
 
-                context.SaveChanges();
+                    return true;
+                }
+                catch(Exception ex)
+                {
+                    return false;
+                }
+
             }
         }
     }
