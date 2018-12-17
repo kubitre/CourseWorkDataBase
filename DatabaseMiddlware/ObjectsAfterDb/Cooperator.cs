@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DatabaseMiddlware.ObjectsAfterDb
 {
-    class Cooperator
+    public class Cooperator
     {
         public Guid Id { get; set; }
         public string LastName { get; set; }
