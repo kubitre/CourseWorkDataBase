@@ -1,7 +1,7 @@
 ﻿using System.Net.Sockets;
 using System.Text;
 
-namespace ServerDB.ServerData
+namespace ServerDb.ServerData
 {
     public class StateObject
     {
