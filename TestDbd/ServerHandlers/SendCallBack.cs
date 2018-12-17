@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 
-namespace ServerDB.ServerHandlers
+namespace ServerDb.ServerHandlers
 {
     class SendCallBack
     {

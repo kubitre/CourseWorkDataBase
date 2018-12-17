@@ -1,11 +1,11 @@
-﻿using ServerDB.ServerData;
+﻿using ServerDb.ServerData;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-namespace ServerDB.ServerHandlers
+namespace ServerDb.ServerHandlers
 {
     public static class AcceptHandler
     {
@@ -23,7 +23,8 @@ namespace ServerDB.ServerHandlers
             var state = new StateObject();
             state.WorkSocket = handler;
 
-            handler.BeginReceive(state.Buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(RecieveDataAsync.ReadCallback), state);
+            if (state.WorkSocket.Connected)
+                handler.BeginReceive(state.Buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(RecieveDataAsync.ReadCallback), state);
 
             allDone.Set();
         }

@@ -1,9 +1,9 @@
-﻿using ServerDB.ServerData;
+﻿using ServerDb.ServerData;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ServerDB.ServerHandlers
+namespace ServerDb.ServerHandlers
 {
     class RecieveDataAsync
     {
@@ -22,20 +22,22 @@ namespace ServerDB.ServerHandlers
                 {
                     Console.WriteLine($"[LOG {DateTime.Now}]: Recieved data on {bytesRead} bytes");
 
-                    state.MessageForReciveData.Append(Encoding.ASCII.GetString(
+                    state.MessageForReciveData.Append(Encoding.UTF8.GetString(
                         state.Buffer, 0, bytesRead));
 
                     Console.WriteLine($"[LOG {DateTime.Now}]: Recieved message: {state.MessageForReciveData.ToString()}");
 
-                    (HandlersForRequest.HandlerRequestBuilder.RequestBuild(state) as HandlersForRequest.IHandler).hand(state);
+                    //(HandlersForRequest.HandlerRequestBuilder.RequestBuild(state) as HandlersForRequest.IHandler).hand(state);
+                    HandlersForRequest.HandlerRequestBuilder.RequestBuild(state)(state.MessageForReciveData.ToString(), state);
                 }
                 else
                 {
                     Console.WriteLine($"[LOG {DateTime.Now}]: Recieve message: {state.MessageForReciveData.ToString()}");
-                    (HandlersForRequest.HandlerRequestBuilder.RequestBuild(state) as HandlersForRequest.IHandler).hand(state);
+                    //(HandlersForRequest.HandlerRequestBuilder.RequestBuild(state) as HandlersForRequest.IHandler).hand(state);
+                    HandlersForRequest.HandlerRequestBuilder.RequestBuild(state)(state.MessageForReciveData.ToString(), state);
                 }
             }
-            catch(Exception ex)
+                catch(Exception ex)
             {
                 ServerDb.Server.NewExceptionRequest(ex.Message);
             }

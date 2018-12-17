@@ -1,10 +1,10 @@
-﻿using ServerDB.ServerData;
+﻿using ServerDb.ServerData;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 
-namespace ServerDB.ServerHandlers
+namespace ServerDb.ServerHandlers
 {
     public class ReaderData
     {

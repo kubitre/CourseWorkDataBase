@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 
-namespace ServerDB.ServerHandlers
+namespace ServerDb.ServerHandlers
 {
     class SendHandler
     {
         public static void Send(Socket handler, String data)
-        { 
-            byte[] byteData = Encoding.ASCII.GetBytes(data);
+        {
+            var encoder = Encoding.UTF8;
+            byte[] byteData = encoder.GetBytes(data);
 
             Console.WriteLine($"[LOG {DateTime.Now}]: start send data to client: {data}");
 
