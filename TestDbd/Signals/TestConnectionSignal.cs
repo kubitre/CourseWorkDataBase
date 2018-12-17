@@ -1,16 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ServerDb.NetworkData;
+using ServerDb.ServerData;
+using System;
 using System.Text;
 
-namespace ServerDB.Signals
+namespace ServerDb.Signals
 {
-    class TestConnectionSignal : IPayload
+    public class TestConnectionSignal : ISignal
     {
         public const string ActionType = "testconnection";
 
-        public void Setting(string payload)
+        public bool HandleCreate(string Payload, StateObject state) => ActionWorker.FinishingTaskSolve(ActionType, false, "not handled!", state);
+
+        public bool HandleDelete(string Payload, StateObject state) => ActionWorker.FinishingTaskSolve(ActionType, false, "not handled!", state);
+
+        public bool HandleGet(string Payload, StateObject state)
         {
-            throw new NotImplementedException();
+            return ActionWorker.FinishingTaskSolve(ActionType, true, "test connection was successfull!", state);
         }
+
+        public bool HandleUpdate(string Payload, StateObject state) => ActionWorker.FinishingTaskSolve(ActionType, false, "not handled!", state);
     }
 }
