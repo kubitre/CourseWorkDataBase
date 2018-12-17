@@ -1,0 +1,157 @@
+﻿<Controls:MetroWindow
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls" x:Class="AdminPanel.Views.Cooperator.Cooperator"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AdminPanel.Views.Cooperator"
+        mc:Ignorable="d"
+        Title="Сотрудники" Height="600" Width="1200"
+        MinHeight="550"
+        MinWidth="1000"
+    MaxHeight="1080"
+    MaxWidth="1920"
+    >
+       <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+     <Controls:MetroWindow.Flyouts>
+        <Controls:FlyoutsControl x:Name="FlyoutControls">
+           <Controls:Flyout x:Name="AboutMe" Header="К Разработчику" Position="Right" Width="auto" Height="200" IsModal="True" Theme="Dark" CloseButtonVisibility="Visible" IsOpen="False"  AreAnimationsEnabled="True">
+                <TextBlock Text="Репозиторий автора проекта: https://github.com/kubitre/" Margin="50" FontSize="18"/>
+            </Controls:Flyout>
+            <Controls:Flyout x:Name="AboutApp" Header="О приложении" Position="Bottom" Width="auto" Height="auto" IsModal="False" Theme="Accent" CloseButtonVisibility="Visible" IsOpen="False"  AreAnimationsEnabled="True">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock FontSize="22" FontFamily="Times New Roman" Text="Приложение администратора для курсовой работы по Базам данных" Grid.Row="0"/>
+                    <TextBlock FontSize="22" FontFamily="Times New Roman" Text="Разработчик Аносов Константин Геннадьевич" Grid.Row="1" Margin="0 50 0 0"/>
+                    <TextBlock FontSize="22" FontFamily="Times New Roman" Text="Версия приложения: 0.0.3" Grid.Row="2"/>
+                </Grid>
+            </Controls:Flyout>
+            <Controls:Flyout x:Name="SettingsPanel" Header="Настройки" Position="Top" Width="auto" Height="auto" IsModal="True" Theme="Adapt" CloseButtonVisibility="Visible" IsOpen="False"  AreAnimationsEnabled="True">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <TextBlock Text="Настройка темы"/>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <TextBlock Text="Настройка представления"/>
+                    </Grid>
+                </Grid>
+            </Controls:Flyout>
+        </Controls:FlyoutsControl>
+    </Controls:MetroWindow.Flyouts>
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <Button x:Name="SettingsPanels" Click="SettingsPanels_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20"
+                   Height="20"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_settings}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                   VerticalAlignment="Center"
+                   Text="Настройки" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="AboutApplication" Click="AboutApplication_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20"
+                   Height="20"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_home_question}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                   VerticalAlignment="Center"
+                   Text="О приложении" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="AboutMeButton" Click="AboutMeButton_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20"
+                   Height="20"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_github}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                   VerticalAlignment="Center"
+                   Text="К разработчику" />
+                </StackPanel>
+            </Button>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+
+    <Grid x:Name="CooperatorWindow">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45*"/>
+            <RowDefinition Height="374*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="216*"/>
+            <ColumnDefinition Width="407*"/>
+            <ColumnDefinition Width="169*"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="1" Grid.Row="0" Background="Orange" VerticalAlignment="Top" Height="Auto" Margin="101,5,127,0">
+            <Button x:Name="TraceRoute" Foreground="White" FontSize="20" Background="Transparent" FontFamily="Times New Roman" BorderThickness="0" Click="TraceRoute_Click">Главная</Button>
+        </Border>
+
+        <Button x:Name="AddNewElement" Margin="10,0,0,0" HorizontalAlignment="Left" Width="46" Background="Transparent" BorderThickness="0" Click="AddNewElement_Click">
+            <Rectangle Width="25" Height="25">
+                <Rectangle.Fill>
+                    <VisualBrush Visual="{StaticResource appbar_add}"  />
+                </Rectangle.Fill>
+            </Rectangle>
+        </Button>
+        
+        <Button x:Name="Refresh" Margin="56,0,0,0" HorizontalAlignment="Left" Width="62" Background="Transparent" BorderThickness="0" Click="Refresh_Click">
+            <Rectangle Width="25" Height="25">
+                <Rectangle.Fill>
+                    <VisualBrush Visual="{StaticResource appbar_refresh}"  />
+                </Rectangle.Fill>
+            </Rectangle>
+        </Button>
+        
+        <Button x:Name="Delete" Margin="118,0,0,0" HorizontalAlignment="Left" Width="62" Background="Transparent" BorderThickness="0" Click="Delete_Click">
+            <Rectangle Width="25" Height="25">
+                <Rectangle.Fill>
+                    <VisualBrush Visual="{StaticResource appbar_delete}"  />
+                </Rectangle.Fill>
+            </Rectangle>
+        </Button>
+
+
+        <DataGrid x:Name="CooperatorData" Grid.ColumnSpan="3" Grid.Row="1" Loaded="CooperatorData_Loaded_1" FontFamily="Times New Roman" FontSize="25" ItemsSource="{Binding Cooperators}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ФИО" Binding="{Binding Path=FMEName}" Width="1*"/>
+                <DataGridTextColumn Header="Должность" Binding="{Binding Path=Position}" Width="1*"/>
+                <DataGridTextColumn Header="Зарплата" Binding="{Binding Path=Price}" Width="1*"/>
+                <DataGridTextColumn Header="Адрес" Binding="{Binding Path=Address}" Width="1*"/>
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem x:Name="ChangeElement" Header="Редактировать" Click="ChangeElement_Click"/>
+                    <MenuItem x:Name="RemoveElement" Header="Удалить" Click="RemoveElement_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+
+    </Grid>
+</Controls:MetroWindow>
