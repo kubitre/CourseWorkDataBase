@@ -6,7 +6,7 @@ namespace AdminPanel.ValidatorsAndCheckers
     internal static class Validation
     {
         private const string patternLogin = "([a-zA-Z]{4,}[0-9]{2,})";
-        private const string patternPassword = @"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$";
+        private const string patternPassword = @"^(?=.*\d)(?=.*[a-z])(?=.*[a-zA-Z]).{8,}$"; //^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$
         private static int[] LengthLogin = { 6, 30 };
         private static int[] LengthPassword = { 6, 30 };
         private static string prefix = "";
