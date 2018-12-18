@@ -10,7 +10,7 @@ namespace AdminPanel.Models
         private Guid id;
         private string name;
         private double price;
-
+        private double amount;
         //
         public Guid Id
         {
@@ -36,6 +36,19 @@ namespace AdminPanel.Models
                 OnPropertyChanged("Name");
             }
         }
+        public double Amount
+        {
+            get
+            {
+                return amount;
+            }
+            set
+            {
+                amount = value;
+                OnPropertyChanged("Amount");
+            }
+        }
+
         public double Price
         {
             get

@@ -14,6 +14,7 @@ namespace AdminPanel.Models
         private string name;
         private string recipe;
         private string outPrice;
+        private DateTime date;
 
         public Guid Id
         {
@@ -64,6 +65,18 @@ namespace AdminPanel.Models
             {
                 outPrice = value;
                 OnPropertyChanged("OutPrice");
+            }
+        }
+        public DateTime Date
+        {
+            get
+            {
+                return date;
+            }
+            set
+            {
+                date = value;
+                OnPropertyChanged("Date");
             }
         }
 

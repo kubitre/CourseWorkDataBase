@@ -30,6 +30,20 @@ namespace AdminPanel.Models
             }
         }
 
+        public static string GetRoleOnRussian(int index)
+        {
+            switch (index)
+            {
+                case 0:
+                    return "Администратор";
+                case 1:
+                    return "Программист";
+                case 2:
+                    return "Калькулятор";
+                default:
+                    return "";
+            }
+        }
         public static int GetIndexRole(string role)
         {
             switch (role)
