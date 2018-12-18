@@ -17,7 +17,7 @@ namespace AdminPanel.ApplicationMemory
             {
                 var excel = new Microsoft.Office.Interop.Excel.Application();
                 excel.DisplayAlerts = false;
-                excel.Visible = false;
+                excel.Visible = true;
                 var workBook = excel.Workbooks.Add(Type.Missing);
                 var workSheet = (Microsoft.Office.Interop.Excel.Worksheet)workBook.ActiveSheet;
                 workSheet.Name = "LearningExcel";

@@ -39,5 +39,6 @@ namespace AdminPanel.ApplicationMemory
         public void ChangeAppTheme(string nameTheme) => this._settingsTheme.ChangeAppTheme(nameTheme);
         public void AddUser(NetworkMiddleware.NetworkData.User user) => this._memoryUser.SetNewUser(user);
         public string GetUserRole() => this._memoryUser.GetUserRole();
+        public string GetuserRoleOnRussian() => this._memoryUser.GetUserRole();
     }
 }

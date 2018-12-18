@@ -25,5 +25,6 @@ namespace AdminPanel.ApplicationMemory
         public string GetUserName() => this.currentUser.UserName;
         public Guid GetId() => this.currentUser.Id;
         public string GetUserRole() => AdminPanel.Models.Role.GetRole(Int32.Parse(this.currentUser.AuthCode));
+        public string GetUserRoleOnRussian() => AdminPanel.Models.Role.GetRoleOnRussian(Int32.Parse(this.currentUser.AuthCode));
     }
 }
