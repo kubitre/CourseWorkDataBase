@@ -12,14 +12,10 @@ namespace AdminPanel
     public partial class LoginPage : MetroWindow
     {
         private ApplicationMemory.MemoryBuild _memory;
-        private Client _networkClient;
 
         public LoginPage()
         {
-            InitializeComponent();
-            this._networkClient = new Client();
-            this._networkClient.GetExceptionOutput += GetMessageException;
-                                        
+            InitializeComponent();      
         }
 
         public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
@@ -63,9 +59,10 @@ namespace AdminPanel
             {
                 if (ValidatorsAndCheckers.Validation.Validate(0, this.LoginUsernameTextBox.Text) & ValidatorsAndCheckers.Validation.Validate(1, this.LoginPasswordTextBox.Password))
                 {
-                    if (this._networkClient.RequestHandle(NetworkMiddleware.NetworkSignal.Authentification_action.ActionTypeGet, this.LoginUsernameTextBox.Text, this.LoginPasswordTextBox.Password))
+                    var clientNetwork = new NetworkMiddleware.Client();
+                    if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkSignal.Authentification_action.ActionTypeGet, this.LoginUsernameTextBox.Text, this.LoginPasswordTextBox.Password))
                     {
-                        var responseParse = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(this._networkClient.Response);
+                        var responseParse = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(clientNetwork.Response);
 
                         this._memory.AddUser(new NetworkMiddleware.NetworkData.User()
                         {
