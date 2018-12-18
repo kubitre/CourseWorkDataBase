@@ -77,7 +77,7 @@ namespace AdminPanel
             ThemeManager.ChangeAppStyle(this,
                                         ThemeManager.GetAccent(this._memory.GetAppAccentTheme()),
                                         ThemeManager.GetAppTheme(this._memory.GetAppTheme()));
-            this.roleUser.Text = this._memory.GetUserRole();
+            this.roleUser.Text = this._memory.GetuserRoleOnRussian();
             this.AddMenuItemsByRoleAccess(Models.Role.GetIndexRole(this._memory.GetUserRole()));
         }
 

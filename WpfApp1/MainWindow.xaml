@@ -10,7 +10,7 @@
         MaxWidth="1920"
         MinHeight="768"
         MaxHeight="1080"
-        Title="AdminPanel" Height="768" Width="1366">
+        Title="Панель Администратора" Height="768" Width="1366">
 
     <Window.Resources>
         <ResourceDictionary>
