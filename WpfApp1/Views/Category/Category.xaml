@@ -9,6 +9,15 @@
         Title="Категории"
         Height="500" 
         Width="1000">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close"
+                        Executed="CommandBinding_Executed"
+                        CanExecute="CommandBinding_CanExecute" />
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Command="ApplicationCommands.Close"
+                    Gesture="Esc"/>
+    </Window.InputBindings>
     <Window.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>

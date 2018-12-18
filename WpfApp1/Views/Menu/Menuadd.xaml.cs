@@ -10,20 +10,20 @@ namespace AdminPanel.Views.Menu
     public partial class Menuadd : MetroWindow
     {
         private ApplicationMemory.MemoryBuild _memory;
-        private List<NetworkMiddleware.NetworkData.Dish> _dishes;
+        private List<NetworkMiddleware.NetworkData.DishGet> _dishes;
 
         public Menuadd()
         {
             InitializeComponent();
 
             this.DataContext = new ViewModel.DishViewModel();
-            this._dishes = new List<NetworkMiddleware.NetworkData.Dish>();
+            this._dishes = new List<NetworkMiddleware.NetworkData.DishGet>();
 
             var clientNetwork = new NetworkMiddleware.Client();
             if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.DishCodes.DISH_GET_CODE, 1000))
             {
                 var response = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(clientNetwork.Response);
-                foreach (var element in Newtonsoft.Json.JsonConvert.DeserializeObject<List<NetworkMiddleware.NetworkData.Dish>>(response.Reponse))
+                foreach (var element in Newtonsoft.Json.JsonConvert.DeserializeObject<List<NetworkMiddleware.NetworkData.DishGet>>(response.Reponse))
                 {
                     this._dishes.Add(element);
                     this.DishChoose.Items.Add(element.Name);
@@ -58,7 +58,7 @@ namespace AdminPanel.Views.Menu
             var menu = new NetworkMiddleware.NetworkData.Menu
             {
                 Name = this.MenuName_Input.Text,
-                Date = DateTime.Now,
+                Date = Date.DisplayDate,
                 Dishes = listWithDishes,
                 Coocker = this._memory.GetUserName()
             };

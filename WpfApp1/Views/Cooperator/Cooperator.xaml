@@ -12,6 +12,15 @@
     MaxHeight="1080"
     MaxWidth="1920"
     >
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close"
+                        Executed="CommandBinding_Executed"
+                        CanExecute="CommandBinding_CanExecute" />
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Command="ApplicationCommands.Close"
+                    Gesture="Esc"/>
+    </Window.InputBindings>
        <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -138,7 +147,9 @@
         </Button>
 
 
-        <DataGrid x:Name="CooperatorData" Grid.ColumnSpan="3" Grid.Row="1" Loaded="CooperatorData_Loaded_1" FontFamily="Times New Roman" FontSize="25" ItemsSource="{Binding Cooperators}" AutoGenerateColumns="False">
+        <DataGrid x:Name="CooperatorData" Grid.ColumnSpan="3" Grid.Row="1" Loaded="CooperatorData_Loaded_1" FontFamily="Times New Roman" FontSize="25" ItemsSource="{Binding Cooperators}" AutoGenerateColumns="False"
+                  SelectedItem="{Binding SelectedCooperator}"
+                  >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ФИО" Binding="{Binding Path=FMEName}" Width="1*"/>
                 <DataGridTextColumn Header="Должность" Binding="{Binding Path=Position}" Width="1*"/>

@@ -11,6 +11,20 @@
         MinWidth="1000"
     MaxHeight="1080"
     MaxWidth="1920">
+     <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.New"
+                        Executed="CommandBinding_Executed"
+                        CanExecute="CommandBinding_CanExecute"/>
+         <CommandBinding Command="ApplicationCommands.Close"
+                        Executed="CommandBinding_Executed_1"
+                        CanExecute="CommandBinding_CanExecute_1" />
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Command="ApplicationCommands.New"
+                    Gesture="Ctrl+s"/>
+        <KeyBinding Command="ApplicationCommands.Close"
+                    Gesture="Esc"/>
+    </Window.InputBindings>
        <Window.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>

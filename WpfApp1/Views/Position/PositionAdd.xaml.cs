@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using MahApps.Metro;
+using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 
 namespace AdminPanel.Views.Position
@@ -8,9 +9,18 @@ namespace AdminPanel.Views.Position
     /// </summary>
     public partial class PositionAdd : MetroWindow
     {
+        private ApplicationMemory.MemoryBuild _memory;
         public PositionAdd()
         {
             InitializeComponent();
+        }
+
+        public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
+        {
+            this._memory = memory;
+            ThemeManager.ChangeAppStyle(this,
+                                        ThemeManager.GetAccent(this._memory.GetAppAccentTheme()),
+                                        ThemeManager.GetAppTheme(this._memory.GetAppTheme()));
         }
 
         private void AddNewPosition_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -31,6 +41,16 @@ namespace AdminPanel.Views.Position
             {
                 this.ShowMessageAsync("Ошибка ввода!", "Вы не заполнили поле!");
             }
+        }
+
+        private void CommandBinding_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            this.DialogResult = false;
+        }
+
+        private void CommandBinding_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+
         }
     }
 }

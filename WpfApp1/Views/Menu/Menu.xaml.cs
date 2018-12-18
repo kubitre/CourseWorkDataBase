@@ -49,9 +49,10 @@ namespace AdminPanel.Views.Menu
             this._memory.AddToHistory("MenuAdd");
             windowForAdding.SetMemoryDump(this._memory);
             windowForAdding.ShowDialog();
+
             if (windowForAdding.DialogResult.Value)
             {
-
+                this.MenuData_Loaded(sender, e);
             }
         }
 
@@ -96,7 +97,7 @@ namespace AdminPanel.Views.Menu
                         Id = element.Id,
                         Name = element.Name,
                         Calculator = element.Coocker,
-                        Date = element.Date,
+                        Date = element.Date.Date,
                         Outer = element.Outer.ToString(),
                         Dish = string.Join("\n", element.Dishes.ToArray())
                     });
@@ -128,28 +129,32 @@ namespace AdminPanel.Views.Menu
 
         private void Refresh_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var clientNetworkTest = new NetworkMiddleware.Client();
-            if (clientNetworkTest.Response != null)
-            {
-                var payload = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(clientNetworkTest.Response);
-                foreach (var element in Newtonsoft.Json.JsonConvert.DeserializeObject<List<AdminPanel.NetworkMiddleware.NetworkData.Menu>>(payload.Reponse))
-                {
-                    (this.DataContext as ViewModel.MenuViewModel).Menus.Add(new Models.Menu
-                    {
-                        Id = element.Id,
-                        Name = element.Name,
-                        Calculator = element.Coocker,
-                        Date = element.Date,
-                        Outer = element.Outer.ToString(),
-                        Dish = string.Join("\n", element.Dishes.ToArray())
-                    });
-                }
-            }
+            MenuData_Loaded(sender, e);
         }
 
         private void Delete_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             RemoveElement_Click(sender, e);
+        }
+
+        private void CommandBinding_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            Export_Click(sender, e);
+        }
+
+        private void CommandBinding_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+            
+        }
+
+        private void CommandBinding_Executed_1(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+        private void CommandBinding_CanExecute_1(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            TraceRoute_Click(sender, e);
         }
     }
 }

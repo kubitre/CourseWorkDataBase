@@ -117,5 +117,15 @@ namespace AdminPanel.Views.User
                 this.ShowMessageAsync("Ошибка!", "Для выполнения операции удалить необходимо выбрать элемент в таблице!");
             }
         }
+
+        private void CommandBinding_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            TraceRoute_Click(sender, e);
+        }
+
+        private void CommandBinding_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+
+        }
     }
 }

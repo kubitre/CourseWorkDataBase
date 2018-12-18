@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using MahApps.Metro;
+using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System.Collections.Generic;
 
@@ -21,6 +22,9 @@ namespace AdminPanel.Views.Position
         public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
         {
             this._memory = memory;
+            ThemeManager.ChangeAppStyle(this,
+                                        ThemeManager.GetAccent(this._memory.GetAppAccentTheme()),
+                                        ThemeManager.GetAppTheme(this._memory.GetAppTheme()));
         }
         
 
@@ -40,12 +44,14 @@ namespace AdminPanel.Views.Position
         private void AddNewElement_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             var windowAdding = new PositionAdd();
+
+            windowAdding.SetMemoryDump(this._memory);
             windowAdding.ShowDialog();
 
             if ((bool)windowAdding.DialogResult)
             {
-                Refresh_Click(sender, e);
                 this.ShowMessageAsync("Операция выполнена успешно!", "Новая должность была успешно добавлена в бд!");
+                Refresh_Click(sender, e);
             }
             else
             {
@@ -111,6 +117,17 @@ namespace AdminPanel.Views.Position
         private void RemoveElement_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             Delete_Click(sender, e);
+        }
+
+        private void CommandBinding_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+
+        }
+
+        private void CommandBinding_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+            TraceRoute_Click(sender, e);
+
         }
     }
 }

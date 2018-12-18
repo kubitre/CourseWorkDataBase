@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using MahApps.Metro;
+using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,18 @@ namespace AdminPanel.Views.Category
     /// </summary>
     public partial class CategoryAdd : MetroWindow
     {
+        private ApplicationMemory.MemoryBuild _memory;
         public CategoryAdd()
         {
             InitializeComponent();
+        }
+
+        public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
+        {
+            this._memory = memory;
+            ThemeManager.ChangeAppStyle(this,
+                                        ThemeManager.GetAccent(this._memory.GetAppAccentTheme()),
+                                        ThemeManager.GetAppTheme(this._memory.GetAppTheme()));
         }
 
         private void AddNewCategory_Click(object sender, RoutedEventArgs e)
@@ -39,6 +49,16 @@ namespace AdminPanel.Views.Category
                     this.DialogResult = false;
                 }
             }
+        }
+
+        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+        private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            this.DialogResult = false;
         }
     }
 }

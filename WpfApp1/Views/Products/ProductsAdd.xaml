@@ -14,6 +14,15 @@
     MaxWidth="1920"
     
     >
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close"
+                        Executed="CommandBinding_Executed"
+                        CanExecute="CommandBinding_CanExecute" />
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Command="ApplicationCommands.Close"
+                    Gesture="Esc"/>
+    </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>

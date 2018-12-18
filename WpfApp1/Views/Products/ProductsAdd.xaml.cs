@@ -51,5 +51,15 @@ namespace AdminPanel.Views.Products
             }
             return true;
         }
+
+        private void CommandBinding_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+        private void CommandBinding_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            this.DialogResult = false;
+        }
     }
 }

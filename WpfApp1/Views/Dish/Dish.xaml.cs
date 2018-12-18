@@ -37,8 +37,11 @@ namespace AdminPanel.Views.Dish
             (this.DataContext as ViewModel.DishViewModel).Dishes.Clear();
 
             if(networkClient.RequestHandle(NetworkMiddleware.NetworkResponseCodes.DishCodes.DISH_GET_CODE, 100))
-                foreach (var elementRecieved in (Newtonsoft.Json.JsonConvert.DeserializeObject<List<NetworkMiddleware.NetworkData.Dish>>(networkClient.State.LastResponse)))
+                foreach (var elementRecieved in (Newtonsoft.Json.JsonConvert.DeserializeObject<List<NetworkMiddleware.NetworkData.DishGet>>(networkClient.State.LastResponse)))
+                {
                     (this.DataContext as ViewModel.DishViewModel).Dishes.Add(new Models.Dish() { Id = elementRecieved.Id, Name= elementRecieved.Name, OutPrice = elementRecieved.Outer.ToString(), Recipe = string.Join("\n", elementRecieved.Products.ToArray())});
+                }
+                    
         }
 
         private void ChangeElement_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -51,8 +54,8 @@ namespace AdminPanel.Views.Dish
             var clinetNetwork = new NetworkMiddleware.Client();
             if(clinetNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.DishCodes.DISH_DELETE_CODE, (this.DataContext as ViewModel.DishViewModel).SelectedDish.Id))
             {
-                this.DishData_Loaded(sender, e);
                 this.ShowMessageAsync("Операция выполнена успешно!", "Выбранное блюдо было удалено из бд!");
+                DishData_Loaded(sender, e);
             }
             else
             {
@@ -70,6 +73,7 @@ namespace AdminPanel.Views.Dish
             if((bool)windowAddingNewElement.DialogResult)
             {
                 this.ShowMessageAsync("Операция выполнена успешно!", "Новое блюдо было добавлено в бд!");
+                Refresh_Click(sender, e);
             }
             else
             {
@@ -114,6 +118,26 @@ namespace AdminPanel.Views.Dish
         private void Delete_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             RemoveElement_Click(sender, e);
+        }
+
+        private void CommandBinding_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+        private void CommandBinding_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            TraceRoute_Click(sender, e);
+        }
+
+        private void CommandBinding_Executed_1(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+        private void CommandBinding_CanExecute_1(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            AddNewElement_Click(sender, e);
         }
     }
 }

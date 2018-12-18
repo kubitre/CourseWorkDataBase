@@ -32,5 +32,15 @@ namespace AdminPanel.Views.Streets
                                         ThemeManager.GetAccent(this._memory.GetAppAccentTheme()),
                                         ThemeManager.GetAppTheme(this._memory.GetAppTheme()));
         }
+
+        private void CommandBinding_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+        private void CommandBinding_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            this.DialogResult = false;
+        }
     }
 }

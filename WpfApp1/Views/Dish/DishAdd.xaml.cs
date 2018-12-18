@@ -1,5 +1,6 @@
 ﻿using MahApps.Metro;
 using MahApps.Metro.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
@@ -32,7 +33,7 @@ namespace AdminPanel.Views.Dish
             }
 
             var clientNetwork2 = new NetworkMiddleware.Client();
-            if(clientNetwork2.RequestHandle(NetworkMiddleware.NetworkResponseCodes.CooperatorCodes.COOPERATOR_GET_CODE, 100))
+            if(clientNetwork2.RequestHandle(NetworkMiddleware.NetworkResponseCodes.CooperatorCodes.COOPERATOR_GET_CODE, 100, "повар"))
             {
                 var response = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(clientNetwork2.Response);
                 foreach(var element in Newtonsoft.Json.JsonConvert.DeserializeObject<List<NetworkMiddleware.NetworkData.Cooperator>>(response.Reponse))
@@ -78,6 +79,31 @@ namespace AdminPanel.Views.Dish
 
         private void AddNewDish_Click(object sender, System.Windows.RoutedEventArgs e)
         {
+            var listWithProducts = new List<NetworkMiddleware.NetworkData.Recipe>();
+            foreach(var product in (this.DataContext as ViewModel.ProductViewModel).Products)
+            {
+                listWithProducts.Add(new NetworkMiddleware.NetworkData.Recipe
+                {
+                    IdProduct = product.Id,
+                    Amount = product.Amount
+                });
+            }
+            var clientNetwork = new NetworkMiddleware.Client();
+            if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.DishCodes.DISH_CREATE_CODE, new NetworkMiddleware.NetworkData.Dish
+            {
+                Name = this.Name_Input.Text,
+                Products = listWithProducts,
+                Date = DateTime.Now,
+                Cooperator = this.CookcerList.SelectedItem.ToString()
+            }))
+            {
+                this.DialogResult = true;
+                
+            }
+            else
+            {
+                this.DialogResult = false;
+            }
 
         }
 

@@ -25,11 +25,14 @@ namespace AdminPanel.Views.Cooperator
     public partial class Cooperator : MetroWindow
     {
         private ApplicationMemory.MemoryBuild _memory;
+        private List<NetworkMiddleware.NetworkData.Cooperator> cooperators;
+
         public string Name = "Cooperator";
         public Cooperator()
         {
             InitializeComponent();
             this.DataContext = new CooperatorViewModel();
+            this.cooperators = new List<NetworkMiddleware.NetworkData.Cooperator>();
         }
 
         public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
@@ -42,7 +45,11 @@ namespace AdminPanel.Views.Cooperator
 
         private void ChangeElement_Click(object sender, RoutedEventArgs e)
         {
-
+            var element = cooperators.FirstOrDefault(x => x.Id.Equals((this.DataContext as ViewModel.CooperatorViewModel).SelectedCooperator.Id));
+            var windowForUpdate = new CooperatorUpdate();
+            windowForUpdate.SetMemoryDump(this._memory);
+            windowForUpdate.SetItem(element);
+            windowForUpdate.ShowDialog();
         }
 
         private void RemoveElement_Click(object sender, RoutedEventArgs e)
@@ -85,11 +92,17 @@ namespace AdminPanel.Views.Cooperator
                 var response = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(clientNetwork.Response);
                 foreach(var element in Newtonsoft.Json.JsonConvert.DeserializeObject<List<NetworkMiddleware.NetworkData.Cooperator>>(response.Reponse))
                 {
+                    cooperators.Add(element);
+                    var category = "";
+
+                    if (element.Category != null)
+                        category = element.Category;
+
                     (this.DataContext as ViewModel.CooperatorViewModel).Cooperators.Add(new AdminPanel.Models.Cooperator
                     {
                         Id = element.Id,
                         Address = $"{element.Street} {element.Building}, кв. {element.Flat}",
-                        Position = $"{element.Position} {element.Category}",
+                        Position = $"{element.Position} {category}",
                         Price = element.Salary,
                         FMEName = $"{element.FirstName} {element.MiddleName[0]}. {element.LastName[0]}."
                     });
@@ -140,6 +153,16 @@ namespace AdminPanel.Views.Cooperator
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
             CooperatorData_Loaded_1(sender, e);
+        }
+
+        private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+
+        }
+
+        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+
         }
     }
 }

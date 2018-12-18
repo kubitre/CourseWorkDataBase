@@ -39,6 +39,7 @@ namespace AdminPanel.Views.Streets
                 if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.StreetCodes.STREET_DELETE_CODE, (this.DataContext as ViewModel.StreetViewModel).SelectedStreet.Id))
                 {
                     this.ShowMessageAsync("Операция выполнена успешно!", "Выбранный элемент был удалён из бд!");
+                    this.Refresh_Click(sender, e);
                 }
                 else
                 {
@@ -112,6 +113,16 @@ namespace AdminPanel.Views.Streets
         private void Delete_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             RemoveElement_Click(sender, e);
+        }
+
+        private void CommandBinding_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+        private void CommandBinding_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            TraceRoute_Click(sender, e);
         }
     }
 }

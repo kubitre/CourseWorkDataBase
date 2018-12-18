@@ -11,6 +11,20 @@
         MinWidth="1000"
     MaxHeight="1080"
     MaxWidth="1920">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close"
+                        Executed="CommandBinding_Executed"
+                        CanExecute="CommandBinding_CanExecute" />
+        <CommandBinding Command="ApplicationCommands.New"
+                        Executed="CommandBinding_Executed_1"
+                        CanExecute="CommandBinding_CanExecute_1" />
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Command="ApplicationCommands.Close"
+                    Gesture="Esc"/>
+        <KeyBinding Command="ApplicationCommands.New"
+                    Gesture="shift++"/>
+    </Window.InputBindings>
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -143,6 +157,7 @@
                 <DataGridTextColumn Header="Название" Binding="{Binding Path=Name}" Width="1*"/>
                 <DataGridTextColumn Header="Рецепт" Binding="{Binding Path=Recipe}" Width="3*" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
                 <DataGridTextColumn Header="Цена" Binding="{Binding Path=OutPrice}" Width="1*"/>
+                <DataGridTextColumn Header="Дата" Binding="{Binding Path=Date}" Width="1*"/>
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>

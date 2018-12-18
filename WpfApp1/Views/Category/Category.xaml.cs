@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using MahApps.Metro;
+using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System.Collections.Generic;
 
@@ -21,7 +22,10 @@ namespace AdminPanel.Views.Category
         public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
         {
             this._memory = memory;
-            
+            ThemeManager.ChangeAppStyle(this,
+                                        ThemeManager.GetAccent(this._memory.GetAppAccentTheme()),
+                                        ThemeManager.GetAppTheme(_memory.GetAppTheme()));
+
         }
 
         private void SettingPanelButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -43,6 +47,8 @@ namespace AdminPanel.Views.Category
         {
             var windowForAdding = new CategoryAdd();
             this._memory.AddToHistory("Category Add");
+
+            windowForAdding.SetMemoryDump(this._memory);
             windowForAdding.ShowDialog();
 
             if ((bool)windowForAdding.DialogResult)
@@ -120,6 +126,16 @@ namespace AdminPanel.Views.Category
             windowMain.SetMemoryDump(this._memory);
             windowMain.Show();
             this.Close();
+        }
+
+        private void CommandBinding_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+        private void CommandBinding_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            TraceRoute_Click(sender, e);
         }
     }
 }

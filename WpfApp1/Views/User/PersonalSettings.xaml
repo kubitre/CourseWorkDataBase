@@ -6,7 +6,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AdminPanel.Views.User"
         mc:Ignorable="d"
-        Title="Персональный настройки" Height="450" Width="800">
+        Title="Персональный настройки" Height="300" Width="650">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close"
+                        Executed="CommandBinding_Executed"
+                        CanExecute="CommandBinding_CanExecute" />
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Command="ApplicationCommands.Close"
+                    Gesture="Esc"/>
+    </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -18,9 +27,9 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <TextBlock Text="Текущий пароль: " FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <TextBox Margin="25" Grid.Row="0" Grid.Column="1"/>
+        <PasswordBox x:Name="OldPassword" Margin="25" Grid.Row="0" Grid.Column="1"/>
         <TextBlock Text="Повторите пароль: " FontSize="25" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <TextBox Margin="25" Grid.Row="1" Grid.Column="1"/>
-        <Button x:Name="ChangePassword" FontSize="25" Content="Изменить пароль" Grid.Row="2" Grid.ColumnSpan="2" Margin="10"/>
+        <PasswordBox x:Name="newPassword" Margin="25" Grid.Row="1" Grid.Column="1"/>
+        <Button x:Name="ChangePassword" FontSize="25" Content="Изменить пароль" Grid.Row="2" Grid.ColumnSpan="2" Margin="10" Click="ChangePassword_Click"/>
     </Grid>
 </Controls:MetroWindow>

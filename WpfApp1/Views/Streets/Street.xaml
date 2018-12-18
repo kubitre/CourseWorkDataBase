@@ -11,6 +11,15 @@
         MinWidth="1000"
     MaxHeight="1080"
     MaxWidth="1920">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close"
+                        Executed="CommandBinding_Executed"
+                        CanExecute="CommandBinding_CanExecute" />
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Command="ApplicationCommands.Close"
+                    Gesture="Esc"/>
+    </Window.InputBindings>
     <Window.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
@@ -136,7 +145,7 @@
         </Button>
 
         <DataGrid x:Name="StreetData" Grid.ColumnSpan="3" Grid.Row="1" Loaded="StreetData_Loaded" FontFamily="Times New Roman" FontSize="25" ItemsSource="{Binding Streets}" AutoGenerateColumns="False"
-                  SelectedItem="{Binding SelectedItem}"
+                  SelectedItem="{Binding SelectedStreet}"
                   >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Название" Binding="{Binding Path=Name}" Width="2*" TextBlock.TextAlignment="Center"/>

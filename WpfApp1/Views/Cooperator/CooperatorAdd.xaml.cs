@@ -69,6 +69,11 @@ namespace AdminPanel.Views.Cooperator
             if(this.PositonCombo.SelectedItem == null)
                 this.ShowMessageAsync("Ошибка!", "Вы не выбрали должность!");
 
+            var catogoryName = "";
+
+            if (this.CategoryCombo.SelectedItem != null)
+                catogoryName = this.CategoryCombo.SelectedItem.ToString();
+
 
             var cooperator = new NetworkMiddleware.NetworkData.Cooperator
             {
@@ -79,10 +84,20 @@ namespace AdminPanel.Views.Cooperator
                 Salary = double.Parse(this.salary_input.Text),
                 BirthDay = this.BirthDay.DisplayDate,
                 Building = int.Parse(this.Building_Input.Text),
-                Category = this.CategoryCombo.SelectedItem.ToString(),
+                Category = catogoryName,
                 Flat = int.Parse(this.Flat_Input.Text),
                 Position = this.PositonCombo.SelectedItem.ToString()
             };
+
+            var clientNetwork = new NetworkMiddleware.Client();
+            if(clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.CooperatorCodes.COOPERATOR_CREATE_CODE, cooperator))
+            {
+                this.DialogResult = true;
+            }
+            else
+            {
+                this.DialogResult = false;
+            }
             
         }
 
