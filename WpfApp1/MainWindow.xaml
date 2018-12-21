@@ -10,7 +10,7 @@
         MaxWidth="1920"
         MinHeight="768"
         MaxHeight="1080"
-        Title="Панель Администратора" Height="768" Width="1366">
+        Title="Панель Администратора" Height="800" Width="1366">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -103,8 +103,10 @@
     <Grid x:Name="MainWindowSSSS">
         <Grid.RowDefinitions>
             <RowDefinition Height="99*"/>
-            <RowDefinition Height="478*"/>
-            <RowDefinition Height="160*"/>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="250*"/>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="250*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="194*"/>
@@ -119,7 +121,7 @@
             <Button x:Name="TraceRoute" Content="Панель администратора" Foreground="White" Background="Orange" FontSize="20" FontFamily="Times New Roman" Margin="10,0"/>
         </Border>
 
-        <Border  Grid.Column="2" CornerRadius="15, 15, 15, 15" Background="Orange" Padding="1 1" Margin="0,30,118,0" Height="auto" VerticalAlignment="Top" HorizontalAlignment="Right" Width="auto">
+        <Border  Grid.Column="2" CornerRadius="15, 15, 15, 15" Background="Orange" Padding="1 1" Margin="0,30,118,0" Height="auto" VerticalAlignment="Top" HorizontalAlignment="Right" Width="auto" BorderBrush="Black">
             <Menu  Background="Orange" BorderThickness="0">
                 <MenuItem x:Name="UserName" Header="Username">
                     <MenuItem x:Name="MySettingsItem" Header="Мои настройки" Click="MySettingsItem_Click"/>
@@ -129,7 +131,20 @@
             </Menu>
         </Border>
 
-        <ListView x:Name="MainMenu" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto"  Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2">
+        <TextBlock Text="Основные функции" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="25" FontFamily="Times New Roman"/>
+        <TextBlock Text="Справочники" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="25" FontFamily="Times New Roman"/>
+        
+        <ListView x:Name="MainMenu" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto"  Grid.Row="2" Grid.ColumnSpan="3" >
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Background="Transparent" Orientation="Horizontal">
+
+                    </StackPanel>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            
+        </ListView>
+        <ListView x:Name="DictionaryMenu" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto"  Grid.Row="5" Grid.ColumnSpan="3">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Background="Transparent" Orientation="Horizontal">

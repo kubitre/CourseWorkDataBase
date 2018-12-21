@@ -28,30 +28,60 @@ namespace AdminPanel
             switch (role)
             {
                 case 0:
+                    //Main functionality
                     this.MainMenu.Items.Add(GetButtonByClass(new Views.Category.Category().Name, "Пользователи", this.UsersWindow_Click));
                     this.MainMenu.Items.Add(GetButtonByClass(new Views.Category.Category().Name, "Сотрудники", this.CooperatorsWindow_Click));
-                    this.MainMenu.Items.Add(GetButtonByClass(new Views.Position.Position().Name, "Должности", this.PositionWindow_Click));
-                    this.MainMenu.Items.Add(GetButtonByClass(new Views.Category.Category().Name, "Категории", this.CategoryWindow_Click));
-                    this.MainMenu.Items.Add(GetButtonByClass(new Views.Category.Category().Name, "Улицы", this.StreetsWindow_Click));
-                    
+
+                    //Dictionaries
+                    this.DictionaryMenu.Items.Add(GetButtonByClass(new Views.Position.Position().Name, "Должности", this.PositionWindow_Click));
+                    this.DictionaryMenu.Items.Add(GetButtonByClass(new Views.Category.Category().Name, "Категории", this.CategoryWindow_Click));
+                    this.DictionaryMenu.Items.Add(GetButtonByClass(new Views.Category.Category().Name, "Улицы", this.StreetsWindow_Click));
                     break;
 
                 case 1:
-
+                    //main functionality
                     this.MainMenu.Items.Add(GetButtonByClass(new Views.Category.Category().Name, "Пользователи", this.UsersWindow_Click));
+                    this.MainMenu.Items.Add(GetButtonByClass(new Views.WorkBook.WorkBook().Name, "Трудовая книга", this.WorkBook_Click));
                     this.MainMenu.Items.Add(GetButtonByClass(new Views.Category.Category().Name, "Сотрудники", this.CooperatorsWindow_Click));
                     this.MainMenu.Items.Add(GetButtonByClass(new Views.Dish.Dish().Name, "Блюда", this.DishesWindow_Click));
                     this.MainMenu.Items.Add(GetButtonByClass(new Views.Menu.Menu().Name, "Меню", this.MenusWindow_Click));
-                    this.MainMenu.Items.Add(GetButtonByClass(new Views.Position.Position().Name, "Должности", this.PositionWindow_Click));
-                    this.MainMenu.Items.Add(GetButtonByClass(new Views.Category.Category().Name, "Категории", this.CategoryWindow_Click));
-                    this.MainMenu.Items.Add(GetButtonByClass(new Views.Category.Category().Name, "Улицы", this.StreetsWindow_Click));
+
+                    //Dictionaries
+                    this.DictionaryMenu.Items.Add(GetButtonByClass(new Views.Position.Position().Name, "Должности", this.PositionWindow_Click));
+                    this.DictionaryMenu.Items.Add(GetButtonByClass(new Views.Category.Category().Name, "Категории", this.CategoryWindow_Click));
+                    this.DictionaryMenu.Items.Add(GetButtonByClass(new Views.Category.Category().Name, "Улицы", this.StreetsWindow_Click));
 
                     break;
 
                 case 2:
-                    this.MainMenu.Items.Add(GetButtonByClass(new Views.Dish.Dish().Name, "Блюда", this.DishesWindow_Click));
+                    //main functionality
                     this.MainMenu.Items.Add(GetButtonByClass(new Views.Menu.Menu().Name, "Меню", this.MenusWindow_Click));
+                    this.MainMenu.Items.Add(GetButtonByClass(new Views.Dish.Dish().Name, "Блюда", this.DishesWindow_Click));
+                    this.TraceRoute.Content = "Клиентская панель";
+                    //dictionaries
+                    this.DictionaryMenu.Items.Add(GetButtonByClass(new Views.Products.Products().Name, "Продукты", this.ProductsWindow_Click));
 
+                    break;
+                case 3:
+                    //main functionality
+                    this.MainMenu.Items.Add(GetButtonByClass(new Views.Cooperator.Cooperator().Name, "Сотрудники", this.CooperatorsWindow_Click));
+                    this.TraceRoute.Content = "Клиентская панель";
+                    //TODO: WORKBOOKS
+
+
+                    //dictionaries
+                    this.DictionaryMenu.Items.Add(GetButtonByClass(new Views.Category.Category().Name, "Категории", this.CategoryWindow_Click));
+                    this.DictionaryMenu.Items.Add(GetButtonByClass(new Views.Position.Position().Name, "Должности", this.PositionWindow_Click));
+                    this.DictionaryMenu.Items.Add(GetButtonByClass(new Views.Streets.Street().Name, "Улицы", this.StreetsWindow_Click));
+
+                    break;
+                case 4:
+                    //main functionality
+                    this.MainMenu.Items.Add(GetButtonByClass(new Views.Dish.Dish().Name, "Блюда", this.DishesWindow_Click));
+                    this.TraceRoute.Content = "Клиентская панель";
+
+                    //dictionaries
+                    this.DictionaryMenu.Items.Add(GetButtonByClass(new Views.Products.Products().Name, "Продукты", this.ProductsWindow_Click));
                     break;
             }
         }
@@ -61,8 +91,8 @@ namespace AdminPanel
             var button = new Button();
             button.Name = nameClass;
             button.Click += handler;
-            button.Margin = new System.Windows.Thickness(20);
-            button.Padding = new System.Windows.Thickness(150);
+            button.Margin = new System.Windows.Thickness(5);
+            button.Padding = new System.Windows.Thickness(80);
             button.FontSize = 25;
             button.FontFamily = new FontFamily("Times New Roman");
             button.Background = Brushes.Orange;
@@ -78,6 +108,7 @@ namespace AdminPanel
                                         ThemeManager.GetAccent(this._memory.GetAppAccentTheme()),
                                         ThemeManager.GetAppTheme(this._memory.GetAppTheme()));
             this.roleUser.Text = this._memory.GetuserRoleOnRussian();
+            this.Title = this._memory.GetTypeApplication();
             this.AddMenuItemsByRoleAccess(Models.Role.GetIndexRole(this._memory.GetUserRole()));
         }
 
@@ -96,6 +127,15 @@ namespace AdminPanel
             this._memory.AddToHistory("DishPanel");
             windowDishes.SetMemoryDump(this._memory);
             windowDishes.Show();
+            this.Close();
+        }
+
+        private void WorkBook_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var windowWithWorkBooks = new Views.WorkBook.WorkBook();
+            this._memory.AddToHistory("WorkBookPanel");
+            windowWithWorkBooks.SetMemoryDump(this._memory);
+            windowWithWorkBooks.Show();
             this.Close();
         }
 
