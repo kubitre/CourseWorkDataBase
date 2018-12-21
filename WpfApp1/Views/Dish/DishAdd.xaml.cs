@@ -20,26 +20,18 @@ namespace AdminPanel.Views.Dish
 
             this._selectedProducts = new List<NetworkMiddleware.NetworkData.Product>();
 
-            var clientNetwork = new NetworkMiddleware.Client();
-            if(clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.ProductCodes.PRODUCT_GET_CODE, 100))
-            {
-                var response = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(clientNetwork.Response);
-                foreach (var element in Newtonsoft.Json.JsonConvert.DeserializeObject<List<NetworkMiddleware.NetworkData.Product>>(response.Reponse))
-                {
-                    this.ChooseProducts.Items.Add(element.Name);
-                    this._selectedProducts.Add(element);
-                }
-                
-            }
+            
+        }
 
-            var clientNetwork2 = new NetworkMiddleware.Client();
-            if(clientNetwork2.RequestHandle(NetworkMiddleware.NetworkResponseCodes.CooperatorCodes.COOPERATOR_GET_CODE, 100, "повар"))
-            {
-                var response = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(clientNetwork2.Response);
-                foreach(var element in Newtonsoft.Json.JsonConvert.DeserializeObject<List<NetworkMiddleware.NetworkData.Cooperator>>(response.Reponse))
-                    this.CookcerList.Items.Add(element.FirstName);
-                
-            }
+        public DishAdd(Models.Dish dish)
+        {
+            InitializeComponent();
+            this.DataContext = new AdminPanel.ViewModel.ProductViewModel();
+
+            this._selectedProducts = new List<NetworkMiddleware.NetworkData.Product>();
+
+            this.Name_Input.Text = dish.Name;
+            
         }
 
         public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
@@ -73,7 +65,26 @@ namespace AdminPanel.Views.Dish
 
         private void ProductList_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
+            var clientNetwork = new NetworkMiddleware.Client();
+            if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.ProductCodes.PRODUCT_GET_CODE, 100))
+            {
+                var response = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(clientNetwork.Response);
+                foreach (var element in Newtonsoft.Json.JsonConvert.DeserializeObject<List<NetworkMiddleware.NetworkData.Product>>(response.Reponse))
+                {
+                    this.ChooseProducts.Items.Add(element.Name);
+                    this._selectedProducts.Add(element);
+                }
 
+            }
+
+            var clientNetwork2 = new NetworkMiddleware.Client();
+            if (clientNetwork2.RequestHandle(NetworkMiddleware.NetworkResponseCodes.CooperatorCodes.COOPERATOR_GET_CODE, 100, "повар"))
+            {
+                var response = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(clientNetwork2.Response);
+                foreach (var element in Newtonsoft.Json.JsonConvert.DeserializeObject<List<NetworkMiddleware.NetworkData.Cooperator>>(response.Reponse))
+                    this.CookcerList.Items.Add(element.FirstName);
+
+            }
         }
 
 

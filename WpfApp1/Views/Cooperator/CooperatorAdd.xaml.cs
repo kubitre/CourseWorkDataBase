@@ -11,12 +11,33 @@ namespace AdminPanel.Views.Cooperator
     public partial class CooperatorAdd : MetroWindow
     {
         private ApplicationMemory.MemoryBuild _memory;
-
+        private bool IsUpdate = false;
         public CooperatorAdd()
         {
             InitializeComponent();
 
         }
+        public CooperatorAdd(NetworkMiddleware.NetworkData.Cooperator coop)
+        {
+            InitializeComponent();
+
+            this.FirstName_Input.Text = coop.FirstName;
+            this.MiddleName_Input.Text = coop.MiddleName;
+            this.LastName_Input.Text = coop.LastName;
+            this.salary_input.Text = coop.Salary.ToString();
+            this.Addresses.SelectedItem = coop.Street;
+            this.Flat_Input.Text = coop.Flat.ToString();
+            this.Building_Input.Text = coop.Building.ToString();
+            this.CategoryCombo.SelectedItem = coop.Category;
+            this.PositonCombo.SelectedItem = coop.Position;
+            this.BirthDay.SelectedDate = coop.BirthDay;
+
+            this.CreateNewCooperator.Content = "Обновить сотрудника";
+            this.Title = "Обновление информации о сотруднике";
+
+            IsUpdate = true;
+        }
+
         public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
         {
             this._memory = memory;
@@ -90,13 +111,28 @@ namespace AdminPanel.Views.Cooperator
             };
 
             var clientNetwork = new NetworkMiddleware.Client();
-            if(clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.CooperatorCodes.COOPERATOR_CREATE_CODE, cooperator))
+
+            if (IsUpdate)
             {
-                this.DialogResult = true;
+                if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.CooperatorCodes.COOPERATOR_UPDATE_CODE, cooperator))
+                {
+                    this.DialogResult = true;
+                }
+                else
+                {
+                    this.DialogResult = false;
+                }
             }
             else
             {
-                this.DialogResult = false;
+                if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.CooperatorCodes.COOPERATOR_CREATE_CODE, cooperator))
+                {
+                    this.DialogResult = true;
+                }
+                else
+                {
+                    this.DialogResult = false;
+                }
             }
             
         }

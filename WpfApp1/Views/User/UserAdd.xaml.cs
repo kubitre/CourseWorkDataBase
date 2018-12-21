@@ -9,10 +9,25 @@ namespace AdminPanel.Views.User
     {
         private ApplicationMemory.MemoryBuild _memory;
         private List<NetworkMiddleware.NetworkData.Cooperator> _cooperators;
+        private bool isUpdate = false;
 
         public UserAdd()
         {
             InitializeComponent();
+        }
+
+        public UserAdd(Models.User user)
+        {
+            InitializeComponent();
+
+            this.Title = "Обновлене пользователя";
+            this.AddNewUser.Content = "Обновить";
+
+            this.Username_Input.Text = user.Name;
+            this.CooperatorChoose.SelectedItem = user.Cooperator;
+            this.RoleChoose.SelectedItem = user.Role;
+
+            isUpdate = true;
         }
 
         public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
@@ -50,19 +65,39 @@ namespace AdminPanel.Views.User
         private void AddNewUser_Click(object sender, RoutedEventArgs e)
         {
             var clientNetwork = new NetworkMiddleware.Client();
-            if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.UserCodes.USER_CREATE_CODE, new NetworkMiddleware.NetworkData.UserNetwork
+            if (isUpdate)
             {
-                Cooperator = this.CooperatorChoose.SelectedItem.ToString(),
-                Username = this.Username_Input.Text,
-                Role = this.RoleChoose.SelectedItem.ToString(),
-                Password = this.Password_Input.Text
-            }
-            ))
-            {
-                this.DialogResult = true;
+                if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.UserCodes.USER_UPDATE_CODE, new NetworkMiddleware.NetworkData.UserNetwork
+                {
+                    Cooperator = this.CooperatorChoose.SelectedItem.ToString(),
+                    Username = this.Username_Input.Text,
+                    Role = this.RoleChoose.SelectedItem.ToString(),
+                    Password = this.Password_Input.Text
+                }
+           ))
+                {
+                    this.DialogResult = true;
+                }
+                else
+                    this.DialogResult = false;
             }
             else
-                this.DialogResult = false;
+            {
+                if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.UserCodes.USER_CREATE_CODE, new NetworkMiddleware.NetworkData.UserNetwork
+                {
+                    Cooperator = this.CooperatorChoose.SelectedItem.ToString(),
+                    Username = this.Username_Input.Text,
+                    Role = this.RoleChoose.SelectedItem.ToString(),
+                    Password = this.Password_Input.Text
+                }
+            ))
+                {
+                    this.DialogResult = true;
+                }
+                else
+                    this.DialogResult = false;
+            }
+            
         }
 
         private void CommandBinding_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)

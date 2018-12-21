@@ -20,12 +20,24 @@ namespace AdminPanel.Views.Products
             this.DataContext = new ProductViewModel();
         }
 
+        private void CheckRights()
+        {
+            if (this._memory.GetTypeApplication().Equals("client"))
+            {
+                this.AddNewElement.Visibility = System.Windows.Visibility.Hidden;
+                this.RemoveElement.Visibility = System.Windows.Visibility.Hidden;
+                this.Delete.Visibility = System.Windows.Visibility.Hidden;
+                this.ProductsData.ContextMenu.Visibility = System.Windows.Visibility.Hidden;
+            }
+        }
+
         public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
         {
             this._memory = memory;
             ThemeManager.ChangeAppStyle(this,
                                         ThemeManager.GetAccent(this._memory.GetAppAccentTheme()),
                                         ThemeManager.GetAppTheme(this._memory.GetAppTheme()));
+            CheckRights();
         }
 
         private void AddNewElement_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -38,11 +50,14 @@ namespace AdminPanel.Views.Products
         private void SettingPanelButton_Click(object sender, System.Windows.RoutedEventArgs e) => this.SettingsPanel.IsOpen = true;
         private void AboutApplicationButton_Click(object sender, System.Windows.RoutedEventArgs e) => this.AboutApp.IsOpen = true;
         private void AboutMeButton_Click(object sender, System.Windows.RoutedEventArgs e) => this.AboutMe.IsOpen = true;
-        
+
 
         private void ChangeElement_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-
+            var windowChange = new ProductsAdd((this.DataContext as ViewModel.ProductViewModel).SelectedProduct);
+            this._memory.AddToHistory("Product change");
+            windowChange.SetMemoryDump(this._memory);
+            windowChange.ShowDialog();
         }
         private void RemoveElement_Click(object sender, System.Windows.RoutedEventArgs e)
         {
@@ -61,11 +76,11 @@ namespace AdminPanel.Views.Products
         private void ProductsData_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             var clientNetwork = new NetworkMiddleware.Client();
-            
-            if(clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.ProductCodes.PRODUCT_GET_CODE, 100))
+
+            if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.ProductCodes.PRODUCT_GET_CODE, 100))
             {
                 var response = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(clientNetwork.Response);
-                foreach(var element in Newtonsoft.Json.JsonConvert.DeserializeObject<List<NetworkMiddleware.NetworkData.Product>>(response.Reponse))
+                foreach (var element in Newtonsoft.Json.JsonConvert.DeserializeObject<List<NetworkMiddleware.NetworkData.Product>>(response.Reponse))
                     (this.DataContext as ViewModel.ProductViewModel).Products
                                         .Add(new Models.Product
                                         {
@@ -73,7 +88,7 @@ namespace AdminPanel.Views.Products
                                             Name = element.Name,
                                             Price = element.Price
                                         });
-                
+
             }
             else
             {
@@ -108,10 +123,10 @@ namespace AdminPanel.Views.Products
 
         private void Delete_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if((this.DataContext as ViewModel.ProductViewModel).SelectedProduct != null)
+            if ((this.DataContext as ViewModel.ProductViewModel).SelectedProduct != null)
             {
                 var clientNetwork = new NetworkMiddleware.Client();
-                if(clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.ProductCodes.PRODUCT_DELETE_CODE, (this.DataContext as ViewModel.ProductViewModel).SelectedProduct.Id))
+                if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.ProductCodes.PRODUCT_DELETE_CODE, (this.DataContext as ViewModel.ProductViewModel).SelectedProduct.Id))
                 {
                     this.ShowMessageAsync("Операция выполнена успешно!", "Выбранный элемент был удалён из бд!");
                 }
@@ -122,7 +137,7 @@ namespace AdminPanel.Views.Products
             }
             else
             {
-                this.ShowMessageAsync("Ошибка","Для применения операция удалить необходимо выбрать элемент из таблицы!");
+                this.ShowMessageAsync("Ошибка", "Для применения операция удалить необходимо выбрать элемент из таблицы!");
             }
         }
 
@@ -134,6 +149,24 @@ namespace AdminPanel.Views.Products
         private void CommandBinding_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
 
+        }
+
+        private void SwithcTheme_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ToggleSwitch toggleSwitch = (sender as ToggleSwitch);
+            if ((bool)toggleSwitch.IsChecked)
+            {
+                this._memory.ChangeAppTheme("BaseLight");
+            }
+            else
+            {
+                this._memory.ChangeAppTheme("BaseDark");
+            }
+
+
+            ThemeManager.ChangeAppStyle(this,
+                                                ThemeManager.GetAccent(this._memory.GetAppAccentTheme()),
+                                                ThemeManager.GetAppTheme(this._memory.GetAppTheme()));
         }
     }
 }

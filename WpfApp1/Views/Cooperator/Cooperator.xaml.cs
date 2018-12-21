@@ -46,9 +46,8 @@ namespace AdminPanel.Views.Cooperator
         private void ChangeElement_Click(object sender, RoutedEventArgs e)
         {
             var element = cooperators.FirstOrDefault(x => x.Id.Equals((this.DataContext as ViewModel.CooperatorViewModel).SelectedCooperator.Id));
-            var windowForUpdate = new CooperatorUpdate();
+            var windowForUpdate = new CooperatorAdd(element);
             windowForUpdate.SetMemoryDump(this._memory);
-            windowForUpdate.SetItem(element);
             windowForUpdate.ShowDialog();
         }
 
@@ -163,6 +162,24 @@ namespace AdminPanel.Views.Cooperator
         private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
 
+        }
+
+        private void SwithcTheme_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleSwitch toggleSwitch = (sender as ToggleSwitch);
+            if ((bool)toggleSwitch.IsChecked)
+            {
+                this._memory.ChangeAppTheme("BaseLight");
+            }
+            else
+            {
+                this._memory.ChangeAppTheme("BaseDark");
+            }
+
+
+            ThemeManager.ChangeAppStyle(this,
+                                                ThemeManager.GetAccent(this._memory.GetAppAccentTheme()),
+                                                ThemeManager.GetAppTheme(this._memory.GetAppTheme()));
         }
     }
 }

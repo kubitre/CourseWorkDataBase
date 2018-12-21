@@ -54,7 +54,7 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0">
-                        <TextBlock Text="Настройка темы"/>
+                        <Controls:ToggleSwitch x:Name="SwithcTheme" Header="Настройка темы" OnLabel="Светлая тема" OffLabel="Тёмная тема"  Click="SwithcTheme_Click"/>
                     </Grid>
                     <Grid Grid.Row="1">
                         <TextBlock Text="Настройка представления"/>

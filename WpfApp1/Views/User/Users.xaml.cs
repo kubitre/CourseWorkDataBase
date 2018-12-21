@@ -41,6 +41,9 @@ namespace AdminPanel.Views.User
 
         private void ChangeElement_Click(object sender, RoutedEventArgs e)
         {
+            var windowChange = new UserAdd((this.DataContext as ViewModel.UserViewModel).SelectedUser);
+            windowChange.SetMemoryDump(this._memory);
+            windowChange.ShowDialog();
 
         }
 
@@ -126,6 +129,24 @@ namespace AdminPanel.Views.User
         private void CommandBinding_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
 
+        }
+
+        private void SwithcTheme_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleSwitch toggleSwitch = (sender as ToggleSwitch);
+            if ((bool)toggleSwitch.IsChecked)
+            {
+                this._memory.ChangeAppTheme("BaseLight");
+            }
+            else
+            {
+                this._memory.ChangeAppTheme("BaseDark");
+            }
+
+
+            ThemeManager.ChangeAppStyle(this,
+                                                ThemeManager.GetAccent(this._memory.GetAppAccentTheme()),
+                                                ThemeManager.GetAppTheme(this._memory.GetAppTheme()));
         }
     }
 }

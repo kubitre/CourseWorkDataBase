@@ -98,7 +98,7 @@ namespace AdminPanel.Views.Menu
                         Name = element.Name,
                         Calculator = element.Coocker,
                         Date = element.Date.Date,
-                        Outer = element.Outer.ToString(),
+                        Outer = string.Join("\n", element.Outer.ToArray()),
                         Dish = string.Join("\n", element.Dishes.ToArray())
                     });
                 }
@@ -155,6 +155,24 @@ namespace AdminPanel.Views.Menu
         private void CommandBinding_CanExecute_1(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
         {
             TraceRoute_Click(sender, e);
+        }
+
+        private void SwithcTheme_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleSwitch toggleSwitch = (sender as ToggleSwitch);
+            if ((bool)toggleSwitch.IsChecked)
+            {
+                this._memory.ChangeAppTheme("BaseLight");
+            }
+            else
+            {
+                this._memory.ChangeAppTheme("BaseDark");
+            }
+
+
+            ThemeManager.ChangeAppStyle(this,
+                                                ThemeManager.GetAccent(this._memory.GetAppAccentTheme()),
+                                                ThemeManager.GetAppTheme(this._memory.GetAppTheme()));
         }
     }
 }

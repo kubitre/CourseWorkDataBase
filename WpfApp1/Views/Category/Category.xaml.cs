@@ -16,7 +16,18 @@ namespace AdminPanel.Views.Category
         public Category()
         {
             InitializeComponent();
+
             this.DataContext = new ViewModel.CategoryViewModel();
+        }
+
+        private void CheckRights()
+        {
+            if (this._memory.GetTypeApplication().Equals("client"))
+            {
+                this.AddNewElement.Visibility = System.Windows.Visibility.Hidden;
+                this.RemoveElement.Visibility = System.Windows.Visibility.Hidden;
+                this.CategoryData.ContextMenu.Visibility = System.Windows.Visibility.Hidden;
+            }
         }
 
         public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
@@ -25,7 +36,7 @@ namespace AdminPanel.Views.Category
             ThemeManager.ChangeAppStyle(this,
                                         ThemeManager.GetAccent(this._memory.GetAppAccentTheme()),
                                         ThemeManager.GetAppTheme(_memory.GetAppTheme()));
-
+            CheckRights();
         }
 
         private void SettingPanelButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -136,6 +147,24 @@ namespace AdminPanel.Views.Category
         private void CommandBinding_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
         {
             TraceRoute_Click(sender, e);
+        }
+
+        private void SwithcTheme_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ToggleSwitch toggleSwitch = (sender as ToggleSwitch);
+            if ((bool)toggleSwitch.IsChecked)
+            {
+                this._memory.ChangeAppTheme("BaseLight");
+            }
+            else
+            {
+                this._memory.ChangeAppTheme("BaseDark");
+            }
+
+
+            ThemeManager.ChangeAppStyle(this,
+                                                ThemeManager.GetAccent(this._memory.GetAppAccentTheme()),
+                                                ThemeManager.GetAppTheme(this._memory.GetAppTheme()));
         }
     }
 }

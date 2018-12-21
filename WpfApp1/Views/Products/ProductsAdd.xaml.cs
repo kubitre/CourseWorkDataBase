@@ -8,10 +8,23 @@ namespace AdminPanel.Views.Products
     public partial class ProductsAdd : MetroWindow
     {
         private ApplicationMemory.MemoryBuild _memory;
+        private bool isUpdate = false;
 
         public ProductsAdd()
         {
             InitializeComponent();
+        }
+
+        public ProductsAdd(Models.Product product)
+        {
+            InitializeComponent();
+
+            this.NameProduct_input.Text = product.Name;
+            this.PriceProduct_input.Text = product.Price.ToString();
+
+            this.Title = "Обновить продукт";
+            this.AdddProduct.Content = "Обновить";
+            isUpdate = true;
         }
 
         public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
@@ -27,13 +40,28 @@ namespace AdminPanel.Views.Products
             if(ChekcInput(this.NameProduct_input.Text, this.PriceProduct_input.Text))
             {
                 var clientNetwork = new NetworkMiddleware.Client();
-                if(clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.ProductCodes.PRODUCT_CREATE_CODE, this.NameProduct_input.Text, this.PriceProduct_input.Text))
+
+                if (isUpdate)
                 {
-                    this.DialogResult = true;
+                    if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.ProductCodes.PRODUCT_UPDATE_CODE, this.NameProduct_input.Text, this.PriceProduct_input.Text))
+                    {
+                        this.DialogResult = true;
+                    }
+                    else
+                    {
+                        this.DialogResult = false;
+                    }
                 }
                 else
                 {
-                    this.DialogResult = false;
+                    if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.ProductCodes.PRODUCT_CREATE_CODE, this.NameProduct_input.Text, this.PriceProduct_input.Text))
+                    {
+                        this.DialogResult = true;
+                    }
+                    else
+                    {
+                        this.DialogResult = false;
+                    }
                 }
             }
 

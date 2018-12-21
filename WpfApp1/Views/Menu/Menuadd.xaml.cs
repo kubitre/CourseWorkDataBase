@@ -3,6 +3,7 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
 
 namespace AdminPanel.Views.Menu
@@ -19,16 +20,12 @@ namespace AdminPanel.Views.Menu
             this.DataContext = new ViewModel.DishViewModel();
             this._dishes = new List<NetworkMiddleware.NetworkData.DishGet>();
 
-            var clientNetwork = new NetworkMiddleware.Client();
-            if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.DishCodes.DISH_GET_CODE, 1000))
-            {
-                var response = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(clientNetwork.Response);
-                foreach (var element in Newtonsoft.Json.JsonConvert.DeserializeObject<List<NetworkMiddleware.NetworkData.DishGet>>(response.Reponse))
-                {
-                    this._dishes.Add(element);
-                    this.DishChoose.Items.Add(element.Name);
-                }
-            }
+            
+        }
+
+        public Menuadd(NetworkMiddleware.NetworkData.Menu menu) : base()
+        {
+            this.MenuName_Input.Text = menu.Name;
         }
 
         public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
@@ -53,7 +50,21 @@ namespace AdminPanel.Views.Menu
 
 
             var listWithDishes = new List<string>();
-            this._dishes.ForEach(x => listWithDishes.Add(x.Name));
+            var lisd = new List<NetworkMiddleware.NetworkData.DishGet>();
+
+            foreach(var element in (this.DataContext as ViewModel.DishViewModel).Dishes)
+            {
+                var dishs = _dishes.FirstOrDefault(x => x.Id.Equals(element.Id));
+                lisd.Add(new NetworkMiddleware.NetworkData.DishGet
+                {
+                    Id = dishs.Id,
+                    Name = dishs.Name,
+                    Outer = dishs.Outer,
+                    Products = dishs.Products
+                });
+
+                listWithDishes.Add(dishs.Name);
+            }
 
             var menu = new NetworkMiddleware.NetworkData.Menu
             {
@@ -75,7 +86,16 @@ namespace AdminPanel.Views.Menu
 
         private void MenuList_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-
+            var clientNetwork = new NetworkMiddleware.Client();
+            if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.DishCodes.DISH_GET_CODE, 1000))
+            {
+                var response = Newtonsoft.Json.JsonConvert.DeserializeObject<NetworkMiddleware.NetworkData.ReponseAllRequests>(clientNetwork.Response);
+                foreach (var element in Newtonsoft.Json.JsonConvert.DeserializeObject<List<NetworkMiddleware.NetworkData.DishGet>>(response.Reponse))
+                {
+                    this._dishes.Add(element);
+                    this.DishChoose.Items.Add(element.Name);
+                }
+            }
         }
 
         private void DishChoose_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

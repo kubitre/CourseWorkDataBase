@@ -10,9 +10,22 @@ namespace AdminPanel.Views.Position
     public partial class PositionAdd : MetroWindow
     {
         private ApplicationMemory.MemoryBuild _memory;
+        private bool isUpdate = false;
+
         public PositionAdd()
         {
             InitializeComponent();
+        }
+
+        public PositionAdd(Models.Position position)
+        {
+            InitializeComponent();
+
+            this.Position_Input.Text = position.Name;
+
+            this.Title = "Обновление позиции";
+            this.AddNewPosition.Content = "Обновить";
+            isUpdate = true;
         }
 
         public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
@@ -28,13 +41,27 @@ namespace AdminPanel.Views.Position
             if (!string.IsNullOrEmpty(this.Position_Input.Text) | !string.IsNullOrWhiteSpace(this.Position_Input.Text))
             {
                 var clientNetwork = new NetworkMiddleware.Client();
-                if(clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.PositionCodes.POSITION_CREATE_CODE, this.Position_Input.Text))
+                if (isUpdate)
                 {
-                    this.DialogResult = true;
+                    if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.PositionCodes.POSITION_UPDATE_CODE, this.Position_Input.Text))
+                    {
+                        this.DialogResult = true;
+                    }
+                    else
+                    {
+                        this.DialogResult = false;
+                    }
                 }
                 else
                 {
-                    this.DialogResult = false;
+                    if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.PositionCodes.POSITION_CREATE_CODE, this.Position_Input.Text))
+                    {
+                        this.DialogResult = true;
+                    }
+                    else
+                    {
+                        this.DialogResult = false;
+                    }
                 }
             }
             else

@@ -29,6 +29,17 @@ namespace AdminPanel.Views.Dish
             ThemeManager.ChangeAppStyle(this,
                                         ThemeManager.GetAccent(this._memory.GetAppAccentTheme()),
                                         ThemeManager.GetAppTheme(this._memory.GetAppTheme()));
+            CheckRights();
+        }
+
+        private void CheckRights()
+        {
+            if (this._memory.GetUserRole().Equals("Calculator"))
+            {
+                this.AddNewElement.Visibility = System.Windows.Visibility.Hidden;
+                this.DishData.ContextMenu.Visibility = System.Windows.Visibility.Hidden;
+                this.Delete.Visibility = System.Windows.Visibility.Hidden;
+            }
         }
 
         private void DishData_Loaded(object sender, System.Windows.RoutedEventArgs e)
@@ -46,7 +57,7 @@ namespace AdminPanel.Views.Dish
 
         private void ChangeElement_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            this.ShowMessageAsync("Изменение элемента", $"ID: {(this.DataContext as ViewModel.DishViewModel).SelectedDish.Id}; Name: {(this.DataContext as ViewModel.DishViewModel).SelectedDish.Name}");
+            var windowUpdate = new DishAdd((this.DataContext as ViewModel.DishViewModel).SelectedDish);
         }
 
         private void RemoveElement_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -138,6 +149,24 @@ namespace AdminPanel.Views.Dish
         private void CommandBinding_CanExecute_1(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
         {
             AddNewElement_Click(sender, e);
+        }
+
+        private void SwithcTheme_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ToggleSwitch toggleSwitch = (sender as ToggleSwitch);
+            if ((bool)toggleSwitch.IsChecked)
+            {
+                this._memory.ChangeAppTheme("BaseLight");
+            }
+            else
+            {
+                this._memory.ChangeAppTheme("BaseDark");
+            }
+
+
+            ThemeManager.ChangeAppStyle(this,
+                                                ThemeManager.GetAccent(this._memory.GetAppAccentTheme()),
+                                                ThemeManager.GetAppTheme(this._memory.GetAppTheme()));
         }
     }
 }

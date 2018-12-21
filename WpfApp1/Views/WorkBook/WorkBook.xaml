@@ -1,14 +1,17 @@
 ﻿<Controls:MetroWindow
-    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls" x:Class="AdminPanel.Views.Category.Category"
+    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls" x:Class="AdminPanel.Views.WorkBook.WorkBook"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AdminPanel.Views.Category"
+        xmlns:local="clr-namespace:AdminPanel.Views.WorkBook"
         mc:Ignorable="d"
-        Title="Категории"
-        Height="500" 
-        Width="1000">
+         Title="Трудовые книжки" Height="600" Width="1600"
+        MinHeight="550"
+        MinWidth="1000"
+    MaxHeight="1080"
+    MaxWidth="1920"
+    >
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.Close"
                         Executed="CommandBinding_Executed"
@@ -18,16 +21,16 @@
         <KeyBinding Command="ApplicationCommands.Close"
                     Gesture="Esc"/>
     </Window.InputBindings>
-    <Window.Resources>
-            <ResourceDictionary>
-                <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary Source="/Resources/Icons.xaml" />
-                </ResourceDictionary.MergedDictionaries>
-            </ResourceDictionary>
-        </Window.Resources>
-    <Controls:MetroWindow.Flyouts>
+       <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl x:Name="FlyoutControls">
-             <Controls:Flyout x:Name="AboutMe" Header="К Разработчику" Position="Right" Width="auto" Height="200" IsModal="True" Theme="Dark" CloseButtonVisibility="Visible" IsOpen="False"  AreAnimationsEnabled="True">
+           <Controls:Flyout x:Name="AboutMe" Header="К Разработчику" Position="Right" Width="auto" Height="200" IsModal="True" Theme="Dark" CloseButtonVisibility="Visible" IsOpen="False"  AreAnimationsEnabled="True">
                 <TextBlock Text="Репозиторий автора проекта: https://github.com/kubitre/" Margin="50" FontSize="18"/>
             </Controls:Flyout>
             <Controls:Flyout x:Name="AboutApp" Header="О приложении" Position="Bottom" Width="auto" Height="auto" IsModal="False" Theme="Accent" CloseButtonVisibility="Visible" IsOpen="False"  AreAnimationsEnabled="True">
@@ -60,7 +63,7 @@
     </Controls:MetroWindow.Flyouts>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <Button x:Name="SettingPanelButton" Click="SettingPanelButton_Click">
+            <Button x:Name="SettingsPanels" Click="SettingsPanels_Click">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="20"
                    Height="20"
@@ -74,7 +77,7 @@
                    Text="Настройки" />
                 </StackPanel>
             </Button>
-            <Button x:Name="AboutApplicationButton" Click="AboutApplicationButton_Click">
+            <Button x:Name="AboutApplication" Click="AboutApplication_Click">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="20"
                    Height="20"
@@ -104,7 +107,8 @@
             </Button>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
-    <Grid>
+
+    <Grid x:Name="CooperatorWindow">
         <Grid.RowDefinitions>
             <RowDefinition Height="45*"/>
             <RowDefinition Height="374*"/>
@@ -114,7 +118,7 @@
             <ColumnDefinition Width="407*"/>
             <ColumnDefinition Width="169*"/>
         </Grid.ColumnDefinitions>
-        <Border Grid.Column="1" Grid.Row="0" Background="Orange" VerticalAlignment="Top" Height="Auto" Margin="75,5,73,0">
+        <Border Grid.Column="1" Grid.Row="0" Background="Orange" VerticalAlignment="Top" Height="Auto" Margin="101,5,127,0">
             <Button x:Name="TraceRoute" Foreground="White" FontSize="20" Background="Transparent" FontFamily="Times New Roman" BorderThickness="0" Click="TraceRoute_Click">Главная</Button>
         </Border>
 
@@ -142,11 +146,16 @@
             </Rectangle>
         </Button>
 
-        <DataGrid x:Name="CategoryData" Grid.ColumnSpan="3" Grid.Row="1" Loaded="CategoryData_Loaded" FontFamily="Times New Roman" FontSize="25" ItemsSource="{Binding Categories}" AutoGenerateColumns="False"
-                  SelectedItem="{Binding SelectedCategory}"
+
+        <DataGrid x:Name="WorkBookData" Grid.ColumnSpan="3" Grid.Row="1" Loaded="WorkBookData_Loaded" FontFamily="Times New Roman" FontSize="25" ItemsSource="{Binding WorkBooks}" AutoGenerateColumns="False"
+                  SelectedItem="{Binding SelectedWorkBook}"
                   >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Название" Binding="{Binding Path=Name}" Width="2*" TextBlock.TextAlignment="Center"/>
+                <DataGridTextColumn Header="Сотрудник" Binding="{Binding Path=FirstName}" Width="1*"/>
+                <DataGridTextColumn Header="Должность" Binding="{Binding Path=Position}" Width="1*"/>
+                <DataGridTextColumn Header="Номер приказа" Binding="{Binding Path=OrderNumber}" Width="1*"/>
+                <DataGridTextColumn Header="Дата приказа" Binding="{Binding Path=OrderDate}" Width="1*"/>
+                <DataGridTextColumn Header="Причина" Binding="{Binding Path=Reason}" Width="1.5*"/>
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>
@@ -155,5 +164,6 @@
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
+
     </Grid>
 </Controls:MetroWindow>

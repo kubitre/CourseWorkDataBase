@@ -17,6 +17,18 @@ namespace AdminPanel.Views.Position
         {
             InitializeComponent();
             this.DataContext = new ViewModel.PositionViewModel();
+            
+            
+        }
+
+        private void CheckRigths()
+        {
+            if (this._memory.GetTypeApplication().Equals("client"))
+            {
+                this.AddNewElement.Visibility = System.Windows.Visibility.Hidden;
+                this.RemoveElement.Visibility = System.Windows.Visibility.Hidden;
+                this.PositionData.ContextMenu.Visibility = System.Windows.Visibility.Hidden;
+            }
         }
 
         public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
@@ -25,6 +37,7 @@ namespace AdminPanel.Views.Position
             ThemeManager.ChangeAppStyle(this,
                                         ThemeManager.GetAccent(this._memory.GetAppAccentTheme()),
                                         ThemeManager.GetAppTheme(this._memory.GetAppTheme()));
+            CheckRigths();
         }
         
 
@@ -128,6 +141,24 @@ namespace AdminPanel.Views.Position
         {
             TraceRoute_Click(sender, e);
 
+        }
+
+        private void SwithcTheme_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ToggleSwitch toggleSwitch = (sender as ToggleSwitch);
+            if ((bool)toggleSwitch.IsChecked)
+            {
+                this._memory.ChangeAppTheme("BaseLight");
+            }
+            else
+            {
+                this._memory.ChangeAppTheme("BaseDark");
+            }
+
+
+            ThemeManager.ChangeAppStyle(this,
+                                                ThemeManager.GetAccent(this._memory.GetAppAccentTheme()),
+                                                ThemeManager.GetAppTheme(this._memory.GetAppTheme()));
         }
     }
 }

@@ -22,9 +22,21 @@ namespace AdminPanel.Views.Category
     public partial class CategoryAdd : MetroWindow
     {
         private ApplicationMemory.MemoryBuild _memory;
+        private bool isUpdate = false;
+
         public CategoryAdd()
         {
             InitializeComponent();
+        }
+
+        public CategoryAdd(NetworkMiddleware.NetworkData.Category category)
+        {
+            InitializeComponent();
+            this.Category_Input.Text = category.Name;
+            this.Title = "Обновление категории";
+
+            this.AddNewCategory.Content = "Обновить";
+            isUpdate = true;
         }
 
         public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
@@ -40,13 +52,27 @@ namespace AdminPanel.Views.Category
             if(string.IsNullOrEmpty(this.Category_Input.Text) | string.IsNullOrWhiteSpace(this.Category_Input.Text))
             {
                 var clientNetwork = new NetworkMiddleware.Client();
-                if(clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.CategoryCodes.CATEGORY_CREATE_CODE, this.Category_Input.Text))
+                if(isUpdate)
                 {
-                    this.DialogResult = true;
+                    if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.CategoryCodes.CATEGORY_UPDATE_CODE, this.Category_Input.Text))
+                    {
+                        this.DialogResult = true;
+                    }
+                    else
+                    {
+                        this.DialogResult = false;
+                    }
                 }
                 else
                 {
-                    this.DialogResult = false;
+                    if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.CategoryCodes.CATEGORY_CREATE_CODE, this.Category_Input.Text))
+                    {
+                        this.DialogResult = true;
+                    }
+                    else
+                    {
+                        this.DialogResult = false;
+                    }
                 }
             }
         }

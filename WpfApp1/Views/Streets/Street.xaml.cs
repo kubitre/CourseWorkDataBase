@@ -15,6 +15,18 @@ namespace AdminPanel.Views.Streets
         {
             InitializeComponent();
             this.DataContext = new StreetViewModel();
+
+        }
+
+        private void CheckRights()
+        {
+            if (this._memory.GetTypeApplication().Equals("client"))
+            {
+                this.AddNewElement.Visibility = System.Windows.Visibility.Hidden;
+                this.RemoveElement.Visibility = System.Windows.Visibility.Hidden;
+                this.Delete.Visibility = System.Windows.Visibility.Hidden;
+                this.StreetData.ContextMenu.Visibility = System.Windows.Visibility.Hidden;
+            }
         }
 
         public void SetMemoryDump(ApplicationMemory.MemoryBuild memory)
@@ -23,17 +35,21 @@ namespace AdminPanel.Views.Streets
             ThemeManager.ChangeAppStyle(this,
                                         ThemeManager.GetAccent(this._memory.GetAppAccentTheme()),
                                         ThemeManager.GetAppTheme(this._memory.GetAppTheme()));
+            CheckRights();
         }
 
 
         private void ChangeElement_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-
+            var windowChange = new StreetsAdd((this.DataContext as ViewModel.StreetViewModel).SelectedStreet);
+            this._memory.AddToHistory("Change Street");
+            windowChange.SetMemoryDump(this._memory);
+            windowChange.ShowDialog();
         }
 
         private void RemoveElement_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if((this.DataContext as ViewModel.StreetViewModel).SelectedStreet != null)
+            if ((this.DataContext as ViewModel.StreetViewModel).SelectedStreet != null)
             {
                 var clientNetwork = new NetworkMiddleware.Client();
                 if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.StreetCodes.STREET_DELETE_CODE, (this.DataContext as ViewModel.StreetViewModel).SelectedStreet.Id))
@@ -66,7 +82,7 @@ namespace AdminPanel.Views.Streets
             {
                 this.ShowMessageAsync("Ошибка!", "Неудалось завершить операцию корректно! Пожалуйста, обратитесь к разработчику!");
             }
-            
+
         }
 
         private void TraceRoute_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -81,11 +97,11 @@ namespace AdminPanel.Views.Streets
         private void AboutMeButton_Click_1(object sender, System.Windows.RoutedEventArgs e) => this.AboutMe.IsOpen = true;
         private void AboutApplicationButton_Click_1(object sender, System.Windows.RoutedEventArgs e) => this.AboutApp.IsOpen = true;
         private void SettingPanelButton_Click_1(object sender, System.Windows.RoutedEventArgs e) => this.SettingsPanel.IsOpen = true;
-        
+
         private void StreetData_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             var clientNetwork = new NetworkMiddleware.Client();
-            if(clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.StreetCodes.STREET_GET_CODE, 100))
+            if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.StreetCodes.STREET_GET_CODE, 100))
             {
                 (this.DataContext as ViewModel.StreetViewModel).Streets.Clear();
 
@@ -102,7 +118,7 @@ namespace AdminPanel.Views.Streets
             {
                 this.ShowMessageAsync("Ошибка!", "Неудалось загрузить данные с сервера! Пожалуйста обратитесь к разработчику!");
             }
-            
+
         }
 
         private void Refresh_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -123,6 +139,24 @@ namespace AdminPanel.Views.Streets
         private void CommandBinding_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
         {
             TraceRoute_Click(sender, e);
+        }
+
+        private void SwithcTheme_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ToggleSwitch toggleSwitch = (sender as ToggleSwitch);
+            if ((bool)toggleSwitch.IsChecked)
+            {
+                this._memory.ChangeAppTheme("BaseLight");
+            }
+            else
+            {
+                this._memory.ChangeAppTheme("BaseDark");
+            }
+
+
+            ThemeManager.ChangeAppStyle(this,
+                                                ThemeManager.GetAccent(this._memory.GetAppAccentTheme()),
+                                                ThemeManager.GetAppTheme(this._memory.GetAppTheme()));
         }
     }
 }

@@ -7,6 +7,7 @@ namespace AdminPanel.Views.Streets
     {
         private ApplicationMemory.MemoryBuild _memory;
         private NetworkMiddleware.Client _clientNetwork;
+        private bool isUpdate = false;
 
         public StreetsAdd()
         {
@@ -14,14 +15,37 @@ namespace AdminPanel.Views.Streets
             this._clientNetwork = new NetworkMiddleware.Client();
         }
 
+        public StreetsAdd(Models.Street street) 
+        {
+            InitializeComponent();
+
+            this.StreetName.Text = street.Name;
+
+            this.Title = "Обновить название улицы";
+            this.NewStreet.Content = "Обновить";
+            isUpdate = true;
+        }
+
         private void NewStreet_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (this._clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.StreetCodes.STREET_CREATE_CODE, this.StreetName.Text))
-                this.DialogResult = true;
-            else
-                this.DialogResult = false;
+            if (isUpdate)
+            {
+                if (this._clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.StreetCodes.STREET_UPDATE_CODE, this.StreetName.Text))
+                    this.DialogResult = true;
+                else
+                    this.DialogResult = false;
 
-            this._clientNetwork.CloseSocket();
+                this._clientNetwork.CloseSocket();
+            }
+            else
+            {
+                if (this._clientNetwork.RequestHandle(NetworkMiddleware.NetworkResponseCodes.StreetCodes.STREET_CREATE_CODE, this.StreetName.Text))
+                    this.DialogResult = true;
+                else
+                    this.DialogResult = false;
+
+                this._clientNetwork.CloseSocket();
+            }
             
         }
 
