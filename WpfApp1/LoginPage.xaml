@@ -17,9 +17,9 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Controls:MetroWindow.Flyouts>
+    <!--<Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl x:Name="FlyoutControls">
-             <Controls:Flyout x:Name="AboutMe" Header="К Разработчику" Position="Right" Width="auto" Height="200" IsModal="True" Theme="Dark" CloseButtonVisibility="Visible" IsOpen="False"  AreAnimationsEnabled="True">
+            <Controls:Flyout x:Name="AboutMe" Header="К Разработчику" Position="Right" Width="auto" Height="200" IsModal="True" Theme="Dark" CloseButtonVisibility="Visible" IsOpen="False"  AreAnimationsEnabled="True">
                 <TextBlock Text="Репозиторий автора проекта: https://github.com/kubitre/" Margin="50" FontSize="18"/>
             </Controls:Flyout>
             <Controls:Flyout x:Name="AboutApp" Header="О приложении" Position="Bottom" Width="auto" Height="auto" IsModal="False" Theme="Accent" CloseButtonVisibility="Visible" IsOpen="False"  AreAnimationsEnabled="True">
@@ -41,7 +41,7 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0">
-                        <TextBlock Text="Настройка темы"/>
+                        <Controls:ToggleSwitch x:Name="SwithcTheme" Header="Настройка темы" OnLabel="Светлая тема" OffLabel="Тёмная тема"  Click="SwithcTheme_Click"/>
                     </Grid>
                     <Grid Grid.Row="1">
                         <TextBlock Text="Настройка представления"/>
@@ -95,8 +95,8 @@
                 </StackPanel>
             </Button>
         </Controls:WindowCommands>
-    </Controls:MetroWindow.RightWindowCommands>
-    
+    </Controls:MetroWindow.RightWindowCommands>-->
+
     <Grid>
         <Grid VerticalAlignment="Top">
             <Image Margin="-288,0,-49,-61" Source="basil-cook-cooking-691114.jpg" Stretch="Fill" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Right" Width="1652">
@@ -111,6 +111,9 @@
                 <PasswordBox x:Name="LoginPasswordTextBox" FontFamily="{Binding FontFamily, ElementName=LoginLabel}" FontSize="{Binding FontSize, ElementName=LoginLabel}" HorizontalAlignment="{Binding HorizontalAlignment, ElementName=LoginLabel}" Margin="282,0,268,0" Width="365"/>
                 <Button Content="Войти" FontFamily="{Binding FontFamily, ElementName=LoginLabel}" FontSize="{Binding FontSize, ElementName=LoginLabel}" HorizontalAlignment="{Binding HorizontalAlignment, ElementName=LoginLabel}" Margin="0 30" Click="Button_Click"/>
             </StackPanel>
+        </Grid>
+        <Grid x:Name="ProgressAuthentificate" Background="Black" Opacity="0.8" Visibility="Hidden">
+            <Controls:MetroProgressBar x:Name="StatusBar"  MinWidth="0" MaxWidth="1000" Value="20" Margin="342,484,311,287" RenderTransformOrigin="0.51,0.5"/>
         </Grid>
     </Grid>
 </Controls:MetroWindow>
