@@ -53,6 +53,7 @@ namespace AdminPanel
             {
                 var Login = new LoginPage();
                 this._memory.AddToHistory("LoginPage");
+                this._memory.SetUpApplicationType(0);
                 Login.SetMemoryDump(this._memory);
                 Login.Show();
                 this.Close();
