@@ -16,6 +16,7 @@ namespace AdminPanel.ApplicationMemory
         private CooperatorMemory    _cooperatorMemory;
         private MenuMemory          _menuMemory;
         private SettingsTheme       _settingsTheme;
+        private string              _applicationType;
 
         public MemoryBuild()
         {
@@ -25,6 +26,19 @@ namespace AdminPanel.ApplicationMemory
             this._cooperatorMemory = new CooperatorMemory();
             this._menuMemory = new MenuMemory();
             this._settingsTheme = new SettingsTheme() { NameAppTheme = "BaseDark", NameAccentTheme = "Cobalt" };
+        }
+
+        public void SetUpApplicationType(int type)
+        {
+            switch (type)
+            {
+                case 0:
+                    this._applicationType = "admin";
+                    break;
+                case 1:
+                    this._applicationType = "client";
+                    break;
+            }
         }
 
         public void AddToHistory(string newAction) => this._historyOpened.Add(newAction);
@@ -40,5 +54,6 @@ namespace AdminPanel.ApplicationMemory
         public void AddUser(NetworkMiddleware.NetworkData.User user) => this._memoryUser.SetNewUser(user);
         public string GetUserRole() => this._memoryUser.GetUserRole();
         public string GetuserRoleOnRussian() => this._memoryUser.GetUserRole();
+        public string GetTypeApplication() => this._applicationType;
     }
 }
