@@ -97,6 +97,7 @@
     <Compile Include="Models\Street.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="ApplicationMemory\SettingsTheme.cs" />
+    <Compile Include="Models\WorkBook.cs" />
     <Compile Include="ViewModel\CategoryViewModel.cs" />
     <Compile Include="ViewModel\CooperatorViewModel.cs" />
     <Compile Include="ViewModel\MenuViewModel.cs" />
@@ -104,17 +105,24 @@
     <Compile Include="ViewModel\ProductViewModel.cs" />
     <Compile Include="ViewModel\StreetViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
+    <Compile Include="ViewModel\WorkBookViewModel.cs" />
     <Compile Include="Views\Category\Category.xaml.cs">
       <DependentUpon>Category.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Category\CategoryAdd.xaml.cs">
       <DependentUpon>CategoryAdd.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Category\CategoryUpdate.xaml.cs">
+      <DependentUpon>CategoryUpdate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Cooperator\Cooperator.xaml.cs">
       <DependentUpon>Cooperator.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Cooperator\CooperatorAdd.xaml.cs">
       <DependentUpon>CooperatorAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Cooperator\CooperatorUpdate.xaml.cs">
+      <DependentUpon>CooperatorUpdate.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Cooperator\Models\Address.cs" />
     <Compile Include="Views\Dish\Dish.xaml.cs">
@@ -130,6 +138,9 @@
       <DependentUpon>ErrorConnect.xaml</DependentUpon>
     </Compile>
     <Compile Include="Events\EventForDataForm.cs" />
+    <Compile Include="Views\Dish\DishUpdate.xaml.cs">
+      <DependentUpon>DishUpdate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Menu\Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
@@ -145,11 +156,17 @@
     <Compile Include="Views\Menu\Menuadd.xaml.cs">
       <DependentUpon>Menuadd.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Menu\MenuUpdate.xaml.cs">
+      <DependentUpon>MenuUpdate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Position\Position.xaml.cs">
       <DependentUpon>Position.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Position\PositionAdd.xaml.cs">
       <DependentUpon>PositionAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Position\PositionUpdate.xaml.cs">
+      <DependentUpon>PositionUpdate.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Products\Products.xaml.cs">
       <DependentUpon>Products.xaml</DependentUpon>
@@ -157,11 +174,17 @@
     <Compile Include="Views\Products\ProductsAdd.xaml.cs">
       <DependentUpon>ProductsAdd.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Products\ProductUpdate.xaml.cs">
+      <DependentUpon>ProductUpdate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Streets\Street.xaml.cs">
       <DependentUpon>Street.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Streets\StreetsAdd.xaml.cs">
       <DependentUpon>StreetsAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Streets\StreetUpdate.xaml.cs">
+      <DependentUpon>StreetUpdate.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\User\PersonalSettings.xaml.cs">
       <DependentUpon>PersonalSettings.xaml</DependentUpon>
@@ -171,6 +194,15 @@
     </Compile>
     <Compile Include="Views\User\Users.xaml.cs">
       <DependentUpon>Users.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\User\UsersUpdate.xaml.cs">
+      <DependentUpon>UsersUpdate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WorkBook\WorkBook.xaml.cs">
+      <DependentUpon>WorkBook.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WorkBook\WorkBookChange.xaml.cs">
+      <DependentUpon>WorkBookChange.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -220,11 +252,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Category\CategoryUpdate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Cooperator\Cooperator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Cooperator\CooperatorAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Cooperator\CooperatorUpdate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -252,6 +292,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Dish\DishUpdate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Menu\Menu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -268,11 +312,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Menu\MenuUpdate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Position\Position.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Position\PositionAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Position\PositionUpdate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -284,11 +336,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Products\ProductUpdate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Streets\Street.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Streets\StreetsAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Streets\StreetUpdate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -301,6 +361,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\User\Users.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\User\UsersUpdate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WorkBook\WorkBook.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WorkBook\WorkBookChange.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
