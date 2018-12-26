@@ -1,10 +1,10 @@
-﻿using AdminPanel.NetworkMiddleware;
-using MahApps.Metro;
+﻿using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Threading;
 using System.Windows;
+using AdminPanel.NetworkMiddlware;
 
 
 namespace AdminPanel
@@ -72,7 +72,7 @@ namespace AdminPanel
                 if (ValidatorsAndCheckers.Validation.Validate(0, this.LoginUsernameTextBox.Text) & ValidatorsAndCheckers.Validation.Validate(1, this.LoginPasswordTextBox.Password))
                 {
                     this.StatusBar.Value = 20;
-                    var clientNetwork = new NetworkMiddleware.Client();
+                    var clientNetwork = new AdminPanel.NetworkMiddlware.Client();
                     this.StatusBar.Value = 30;
                     if (clientNetwork.RequestHandle(NetworkMiddleware.NetworkSignal.Authentification_action.ActionTypeGet, this.LoginUsernameTextBox.Text, this.LoginPasswordTextBox.Password))
                     {
@@ -96,7 +96,7 @@ namespace AdminPanel
                         }
 
 
-                        this._memory.AddUser(new NetworkMiddleware.NetworkData.User()
+                        this._memory.AddUser(new AdminPanel.NetworkMiddleware.NetworkData.User()
                         {
                             UserName = this.LoginUsernameTextBox.Text,
                             AuthCode = responseParse.Reponse,
