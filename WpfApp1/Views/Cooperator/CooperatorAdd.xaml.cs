@@ -32,7 +32,7 @@ namespace AdminPanel.Views.Cooperator
             this.PositonCombo.SelectedItem = coop.Position;
             this.BirthDay.SelectedDate = coop.BirthDay;
 
-            this.CreateNewCooperator.Content = "Обновить сотрудника";
+            this.CreateNewCooperator.Content = "Обновить данные";
             this.Title = "Обновление информации о сотруднике";
 
             IsUpdate = true;

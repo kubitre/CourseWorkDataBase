@@ -149,7 +149,7 @@
                   SelectedItem="{Binding SelectedUser}"
                   >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Никнейм" Binding="{Binding Path=Name}" Width="1.2*" TextBlock.TextAlignment="Center"/>
+                <DataGridTextColumn Header="Пользователь" Binding="{Binding Path=Name}" Width="1.2*" TextBlock.TextAlignment="Center"/>
                 <DataGridTextColumn Header="П. Вход" Binding="{Binding Path=LastEnter}" Width="1*" TextBlock.TextAlignment="Center"/>
                 <DataGridTextColumn Header="Сотрудник" Binding="{Binding Path=Cooperator}" Width="2*" TextBlock.TextAlignment="Center"/>
                 <DataGridTextColumn Header="Роль" Binding="{Binding Path=Role}" Width="1*" TextBlock.TextAlignment="Center"/>

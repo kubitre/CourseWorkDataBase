@@ -171,7 +171,7 @@
                   SelectedItem="{Binding SelectedMenu}"
                   >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Название" Binding="{Binding Path=Name}" Width="1.3*"/>
+                <DataGridTextColumn Header="Категория" Binding="{Binding Path=Name}" Width="1.3*"/>
                 <DataGridTextColumn Header="Составил" Binding="{Binding Path=Calculator}" Width="1.5*"/>
                 <DataGridTextColumn Header="Блюда" Binding="{Binding Path=Dish}" Width="1.5*"/>
                 <DataGridTextColumn Header="Выход" Binding="{Binding Path=Outer}" Width="1*"/>

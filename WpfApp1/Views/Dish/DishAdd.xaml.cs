@@ -1,5 +1,6 @@
 ﻿using MahApps.Metro;
 using MahApps.Metro.Controls;
+using NetworkMiddleware.NetworkData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -90,10 +91,10 @@ namespace AdminPanel.Views.Dish
 
         private void AddNewDish_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var listWithProducts = new List<NetworkMiddleware.NetworkData.Recipe>();
+            var listWithProducts = new List<Recipe>();
             foreach(var product in (this.DataContext as ViewModel.ProductViewModel).Products)
             {
-                listWithProducts.Add(new NetworkMiddleware.NetworkData.Recipe
+                listWithProducts.Add(new Recipe
                 {
                     IdProduct = product.Id,
                     Amount = product.Amount
